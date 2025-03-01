@@ -42,7 +42,7 @@
                 </a>
             </li>
             <li>
-                <a href="boardbattles.html" class="nav-link active">
+                <a href="boardbattles.html" class="nav-link text-dark">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                         class="bi bi-graph-up-arrow me-2" viewBox="0 0 16 16">
                         <path fill-rule="evenodd"
@@ -63,7 +63,7 @@
                 </a>
             </li>
             <li>
-                <a href="startboardbattle.html" class="nav-link text-dark">
+                <a href="startboardbattle.html" class="nav-link active">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                         class="bi bi-lightning me-2" viewBox="0 0 16 16">
                         <path
@@ -108,48 +108,56 @@
     </div>
 
     <div class="main-content">
+        <h1 class="text-center">Board Battle</h1>
+
         <div class="content-container">
-            <h3 class="text-center mb-4">Active Battles</h3>
+            <h3 class="text-center mb-4">Start Battle!</h3>
             <hr>
 
-            <!-- battles -->
-            <div class="row justify-content-center">
-                <div class="col-md-6">
-                    <div class="card text-center">
-                        <div class="card-header bg-primary text-white">
-                            <h2>Food VS Art</h2>
+            <div class="container text-center">
+                <form action="">
+                    <div class="row">
+                        <div class="col">
+                            <h3>Board 1</h3>
+                            <select class="form-select" aria-label="Default select example">
+                                <option selected>Choose your fighter</option>
+                                <option value="1">Cars</option>
+                                <option value="2">Food</option>
+                                <option value="3">WebDev</option>
+                                <option value="4">Pets</option>
+                                <option value="5">Gaming</option>
+                                <option value="6">Art</option>
+                                <option value="7">Movies</option>
+                            </select>
                         </div>
-                        <div class="card-body">
-                            <p><strong>Food Upvotes:</strong> 12,345</p>
-                            <p><strong>Art Upvotes:</strong> 10,987</p>
-                        </div>
-                        <div class="card-footer">
-                            <p class="text-danger">Battle ends in 48 hours!</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="row justify-content-center my-4">
-                <div class="col-md-6">
-                    <div class="card text-center">
-                        <div class="card-header bg-primary text-white">
-                            <h2>Cars VS Gaming</h2>
-                        </div>
-                        <div class="card-body">
-                            <p><strong>Cars Upvotes:</strong> 2,955</p>
-                            <p><strong>Gaming:</strong> 5,437</p>
-                        </div>
-                        <div class="card-footer">
-                            <p class="text-danger">Battle ends in 120 hours!</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
 
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
-            crossorigin="anonymous"></script>
+                        <div class="col m-4">
+                            <img src="images/vs_img.png" class="vs-img">
+                        </div>
+                        <div class="col">
+                            <h3>Board 2</h3>
+                            <select class="form-select" aria-label="Default select example">
+                                <option selected>Choose your fighter</option>
+                                <option value="1">Cars</option>
+                                <option value="2">Food</option>
+                                <option value="3">WebDev</option>
+                                <option value="4">Pets</option>
+                                <option value="5">Gaming</option>
+                                <option value="6">Art</option>
+                                <option value="7">Movies</option>
+                            </select>
+                        </div>
+                    </div>
+                    <button class="btn btn-danger btn-lg mt-2">Fight!</button>
+                </form>
+            </div>
+
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
 </body>
 
 </html>

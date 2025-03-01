@@ -38,3 +38,8 @@ body {
     background-color: white;
     border: solid 1px gray;
 }
+
+.vs-img {
+    height: 100px;
+    width: auto;
+}
