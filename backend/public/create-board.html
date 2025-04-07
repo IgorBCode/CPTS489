@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Create Board</title>
+</head>
+
+<body>
+    <nav>
+        <a href="/index.html">Home</a> |
+    </nav>
+    <h1>Create a Board</h1>
+
+    <form id="boardForm">
+        <label>
+            Name:
+            <input type="text" id="name" required />
+        </label>
+        <br /><br />
+        <label>
+            Description:
+            <textarea id="description" required></textarea>
+        </label>
+        <br /><br />
+        <button type="submit">Create Board</button>
+    </form>
+
+    <p id="message"></p>
+
+    <script>
+        document.getElementById('boardForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const name = document.getElementById('name').value;
+            const description = document.getElementById('description').value;
+
+            const response = await fetch('/api/boards', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                credentials: 'include', // this sends cookies
+                body: JSON.stringify({ name, description })
+            });
+
+            const message = document.getElementById('message');
+
+            if (response.ok) {
+                const data = await response.json();
+                message.textContent = `Board "${data.name}" created successfully!`;
+                message.style.color = 'green';
+            } else {
+                const error = await response.json();
+                message.textContent = `Error: ${error.error || 'Something went wrong'}`;
+                message.style.color = 'red';
+            }
+        });
+    </script>
+</body>
+
+</html>

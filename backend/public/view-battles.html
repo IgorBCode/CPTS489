@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Board Battles</title>
+</head>
+
+<body>
+    <nav>
+        <a href="/index.html">Home</a> |
+    </nav>
+    <section id="battle-control">
+        <h3>Battle Controls (For Testing)</h3>
+        <button id="end-battles">Force End All Battles</button>
+        <p id="end-status"></p>
+    </section>
+
+    <h1>All Board Battles</h1>
+    <div id="battle-list">Loading battles...</div>
+
+    <script>
+        function formatTimeRemaining(ms) {
+            if (ms <= 0) return "Battle is over";
+            const totalSec = Math.floor(ms / 1000);
+            const days = Math.floor(totalSec / 86400);
+            const hours = Math.floor((totalSec % 86400) / 3600);
+            const minutes = Math.floor((totalSec % 3600) / 60);
+            return `${days}d ${hours}h ${minutes}m remaining`;
+        }
+
+        fetch('/api/battles/all', { credentials: 'include' })
+            .then(res => res.json())
+            .then(async battles => {
+                const container = document.getElementById('battle-list');
+                container.innerHTML = '';
+                for (const battle of battles) {
+                    // Fetch upvotes for both boards in this battle
+                    const res = await fetch(`/api/battles/upvotes/${battle._id}`);
+                    const upvotes = await res.json();
+
+                    const now = new Date();
+                    const end = new Date(battle.endTime);
+                    const timeLeft = end - now;
+                    const isOver = timeLeft <= 0;
+
+                    const div = document.createElement('div');
+                    div.innerHTML = `
+            <h2>${battle.boardA.name} 🆚 ${battle.boardB.name}</h2>
+            <p>Upvotes:</p>
+            <ul>
+              <li><strong>${battle.boardA.name}</strong>: ${upvotes.boardA}</li>
+              <li><strong>${battle.boardB.name}</strong>: ${upvotes.boardB}</li>
+            </ul>
+            <p>${isOver ? `<strong>Winner:</strong> ${battle.winner?.name || 'Tie/Undecided'}` : formatTimeRemaining(timeLeft)}</p>
+            <hr>
+          `;
+                    container.appendChild(div);
+                }
+            })
+            .catch(err => {
+                document.getElementById('battle-list').textContent = 'Failed to load battles.';
+                console.error(err);
+            });
+
+        document.getElementById('end-battles').addEventListener('click', () => {
+            fetch('/api/battles/end-battles', {
+                method: 'POST',
+                credentials: 'include'
+            })
+                .then(res => res.json())
+                .then(data => {
+                    document.getElementById('end-status').textContent = data.message;
+                })
+                .catch(err => {
+                    document.getElementById('end-status').textContent = 'Error ending battles.';
+                    console.error(err);
+                });
+            location.reload();
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>All Boards</title>
+</head>
+
+<body>
+  <nav>
+    <a href="/index.html">Home</a> |
+  </nav>
+  <h1>All Boards</h1>
+  <ul id="boardsList"></ul>
+
+  <script>
+    async function loadBoards() {
+      try {
+        const res = await fetch('/api/boards'); // Sends GET request to your backend
+        const data = await res.json();
+
+        const list = document.getElementById('boardsList');
+        list.innerHTML = '';
+
+        data.forEach(board => {
+          const li = document.createElement('li');
+          li.innerHTML = `
+          <a href="board.html?id=${board._id}">
+          <strong>${board.name}</strong></a>: ${board.description}`;
+          list.appendChild(li);
+        });
+
+      } catch (err) {
+        console.error('Error loading boards:', err);
+      }
+    }
+
+    // Load boards when the page loads
+    window.onload = loadBoards;
+  </script>
+</body>
+
+</html>

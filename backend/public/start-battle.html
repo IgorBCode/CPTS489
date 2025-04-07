@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Start Board Battle</title>
+</head>
+
+<body>
+    <nav>
+        <a href="/index.html">Home</a>
+    </nav>
+    <h1>Start a Battle Between Boards</h1>
+    <form id="battle-form">
+        <label>Select Board A:
+            <select id="boardA" required></select>
+        </label><br><br>
+
+        <label>Select Board B:
+            <select id="boardB" required></select>
+        </label><br><br>
+
+        <button type="submit">Start Battle</button>
+        <p id="status"></p>
+    </form>
+
+    <script>
+        // Load boards into dropdowns
+        fetch('/api/boards')
+            .then(res => res.json())
+            .then(boards => {
+                const a = document.getElementById('boardA');
+                const b = document.getElementById('boardB');
+                boards.forEach(board => {
+                    const opt1 = new Option(board.name, board._id);
+                    const opt2 = new Option(board.name, board._id);
+                    a.add(opt1);
+                    b.add(opt2);
+                });
+            });
+
+        // start battle
+        document.getElementById('battle-form').addEventListener('submit', e => {
+            e.preventDefault();
+            const boardA = document.getElementById('boardA').value;
+            const boardB = document.getElementById('boardB').value;
+
+            fetch('/api/battles/start', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                credentials: 'include',
+                body: JSON.stringify({ boardA, boardB })
+            })
+                .then(res => res.json())
+                .then(data => {
+                    document.getElementById('status').textContent = data.message || 'Battle started!';
+                })
+                .catch(err => {
+                    document.getElementById('status').textContent = 'Error starting battle';
+                    console.error(err);
+                });
+        });
+    </script>
+</body>
+
+</html>

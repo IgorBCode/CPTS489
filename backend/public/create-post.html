@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Create Post</title>
+</head>
+
+<body>
+    <nav>
+        <a href="/index.html">Home</a> |
+    </nav>
+    <h1>Create a New Post</h1>
+    <form id="postForm">
+        <label>Title:</label><br />
+        <input type="text" id="title" name="title" required /><br /><br />
+
+        <label>Content:</label><br />
+        <textarea id="content" name="content" rows="5" cols="40"></textarea><br /><br />
+
+        <label>Select board to post to:</label><br />
+        <select id="boardSelect" name="boardId" required>
+            <option value="">Loading boards...</option>
+        </select><br /><br />
+
+        <button type="submit">Create Post</button>
+    </form>
+
+    <div id="message"></div>
+
+    <script>
+        // get list of existing boards
+        fetch('/api/boards')
+            .then(response => response.json())
+            .then(data => {
+                const select = document.getElementById('boardSelect');
+                select.innerHTML = '';
+                data.forEach(sub => {
+                    const option = document.createElement('option');
+                    option.value = sub._id;
+                    option.textContent = sub.name;
+                    select.appendChild(option);
+                });
+            })
+            .catch(err => {
+                document.getElementById('boardSelect').innerHTML = '<option>Boards not found</option>';
+                console.error(err);
+            });
+
+        // Handle form submission
+        document.getElementById('postForm').addEventListener('submit', async function (e) {
+            e.preventDefault();
+
+            const title = document.getElementById('title').value;
+            const content = document.getElementById('content').value;
+            const boardId = document.getElementById('boardSelect').value;
+
+            const res = await fetch('/api/posts', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                credentials: 'include',
+                body: JSON.stringify({ title, content, boardId })
+            });
+
+            const result = await res.json();
+            if (res.ok) {
+                document.getElementById('message').innerText = '✅ Post created successfully!';
+                document.getElementById('postForm').reset();
+            } else {
+                document.getElementById('message').innerText = '❌ Error: ' + (result.error || 'Unknown error');
+            }
+        });
+    </script>
+</body>
+
+</html>
