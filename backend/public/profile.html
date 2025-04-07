@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>User Profile</title>
+</head>
+
+<body>
+    <nav>
+        <a href="/index.html">Home</a> |
+    </nav>
+    <h1>Your Profile</h1>
+
+    <!-- Awards -->
+    <h2>Awards</h2>
+    <div id="awards"></div>
+
+    <hr>
+
+    <!-- Change Username -->
+    <h2>Change Username</h2>
+    <form id="username-form">
+        <input type="text" id="new-username" placeholder="New Username" required />
+        <button type="submit">Update Username</button>
+        <p id="username-status"></p>
+    </form>
+
+    <hr>
+
+    <!-- Change Password -->
+    <h2>Change Password</h2>
+    <form id="password-form">
+        <input type="password" id="current-password" placeholder="Current Password" required /><br><br>
+        <input type="password" id="new-password" placeholder="New Password" required />
+        <button type="submit">Update Password</button>
+        <p id="password-status"></p>
+    </form>
+
+    <script>
+        // Load profile info
+        fetch('/api/auth/me', { credentials: 'include' })
+            .then(res => res.json())
+            .then(data => {
+                if (data.user) {
+                    fetch(`/api/users/${data.user.id}`, { credentials: 'include' })
+                        .then(res => res.json())
+                        .then(user => {
+                            const container = document.getElementById('awards');
+                            user.awards.forEach(gif => {
+                                const img = document.createElement('img');
+                                img.src = gif;
+                                img.style.width = '120px';
+                                img.style.margin = '5px';
+                                container.appendChild(img);
+                            });
+                        });
+                }
+            });
+
+        // Change username
+        document.getElementById('username-form').addEventListener('submit', e => {
+            e.preventDefault();
+            const newUsername = document.getElementById('new-username').value;
+            fetch('/api/users/change-username', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                credentials: 'include',
+                body: JSON.stringify({ newUsername })
+            })
+                .then(res => res.json())
+                .then(data => {
+                    document.getElementById('username-status').textContent = data.message || data.error;
+                })
+                .catch(err => {
+                    document.getElementById('username-status').textContent = 'Error updating username';
+                    console.error(err);
+                });
+        });
+
+        // Change password
+        document.getElementById('password-form').addEventListener('submit', e => {
+            e.preventDefault();
+            const currentPassword = document.getElementById('current-password').value;
+            const newPassword = document.getElementById('new-password').value;
+
+            fetch('/api/users/change-password', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                credentials: 'include',
+                body: JSON.stringify({ currentPassword, newPassword })
+            })
+                .then(res => res.json())
+                .then(data => {
+                    document.getElementById('password-status').textContent = data.message || data.error;
+                })
+                .catch(err => {
+                    document.getElementById('password-status').textContent = 'Error updating password';
+                    console.error(err);
+                });
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Board Posts</title> <!-- Will be dynamically set -->
+</head>
+
+<body>
+    <nav>
+        <a href="/index.html">Home</a> |
+    </nav>
+    <h1 id="board-name">Loading Board...</h1>
+
+    <p id="board-description"></p>
+    <hr>
+    <h3>Awards</h3>
+    <div id="awards"></div>
+    <hr>
+
+    <a href="/create-post.html">CREATE POST</a>
+    <div id="subscription-controls">
+        <button id="subscribe-btn">Subscribe</button>
+        <button id="unsubscribe-btn">Unsubscribe</button>
+        <p id="sub-status"></p>
+    </div>
+    <div id="post-list"></div>
+
+    <script>
+        const params = new URLSearchParams(window.location.search);
+        const boardId = params.get('id');
+
+        // Fetch board info to get its name
+        fetch(`/api/boards/${boardId}`)
+            .then(res => res.json())
+            .then(board => {
+                document.title = `${board.name} Posts`;
+                document.getElementById('board-name').textContent = `${board.name} Board`;
+                document.getElementById('board-description').textContent = board.description;
+
+                if (board.awards && board.awards.length > 0) {
+                    board.awards.forEach(link => {
+                        const img = document.createElement('img');
+                        img.src = link;
+                        img.style.width = '100px';
+                        img.style.margin = '5px';
+                        document.getElementById('awards').appendChild(img);
+                    });
+                }
+            })
+            .catch(err => {
+                console.error('Error loading board info:', err);
+                document.getElementById('board-name').textContent = 'Board not found';
+            });
+
+        // get posts in the board
+        fetch(`/api/posts/board/${boardId}`)
+            .then(res => res.json())
+            .then(posts => {
+                const container = document.getElementById('post-list');
+                posts.forEach(post => {
+                    const el = document.createElement('div');
+                    el.innerHTML = `
+            <h2><a href="/post.html?id=${post._id}">${post.title}</a></h2>
+            <p>${post.content}</p>
+            <p>By: ${post.author?.username || 'Unknown'}</p>
+            <p>
+                <button onclick="vote('${post._id}', 'upvote', this)">⬆️ Upvote</button>
+                <button onclick="vote('${post._id}', 'downvote', this)">⬇️ Downvote</button>
+            </p>
+            <p id="votes-${post._id}">Upvotes: ${post.upvotes} | Downvotes: ${post.downvotes}</p>
+            <hr>
+          `;
+                    container.appendChild(el);
+                });
+            })
+            .catch(err => {
+                console.error('Error loading board posts:', err);
+            });
+
+        function vote(postId, type, btn) {
+            fetch(`/api/posts/${postId}/${type}`, {
+                method: 'POST',
+                credentials: 'include' // Important: includes cookies like JWT token
+            })
+                .then(res => res.json())
+                .then(updatedPost => {
+                    const voteDisplay = document.getElementById(`votes-${updatedPost._id}`);
+                    voteDisplay.textContent = `Upvotes: ${updatedPost.upvotes} | Downvotes: ${updatedPost.downvotes}`;
+                })
+                .catch(err => {
+                    alert('Error voting. Are you logged in?');
+                    console.error(err);
+                });
+        }
+
+        // sub and unsub stuff
+        document.getElementById('subscribe-btn').addEventListener('click', () => {
+            fetch('/api/subscriptions/subscribe', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                credentials: 'include',
+                body: JSON.stringify({ boardId })
+            })
+                .then(res => res.json())
+                .then(data => {
+                    document.getElementById('sub-status').textContent = data.message || 'Subscribed!';
+                })
+                .catch(err => {
+                    document.getElementById('sub-status').textContent = 'Error subscribing';
+                    console.error(err);
+                });
+        });
+
+        document.getElementById('unsubscribe-btn').addEventListener('click', () => {
+            fetch('/api/subscriptions/unsubscribe', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                credentials: 'include',
+                body: JSON.stringify({ boardId })
+            })
+                .then(res => res.json())
+                .then(data => {
+                    document.getElementById('sub-status').textContent = data.message || 'Unsubscribed!';
+                })
+                .catch(err => {
+                    document.getElementById('sub-status').textContent = 'Error unsubscribing';
+                    console.error(err);
+                });
+        });
+
+    </script>
+</body>
+
+</html>
