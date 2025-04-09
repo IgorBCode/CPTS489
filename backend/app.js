@@ -19,7 +19,7 @@ app.use(cors({
 
 // static html files for testing
 // remove this to see raw json data
-app.use(express.static('public'));
+// app.use(express.static('public'));
 
 // authentication routes
 const authRoutes = require('./routes/auth');
