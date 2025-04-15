@@ -15,7 +15,7 @@ export default function Register() {
                         />
                         <h3 className="mb-3">Register</h3>
                     </div>
-                    <form>
+                    <form action="/api/auth/register" method="POST">
                         <div className="mb-3">
                             <label htmlFor="username" className="form-label">
                                 Username

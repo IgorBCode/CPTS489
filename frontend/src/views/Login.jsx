@@ -18,7 +18,7 @@ export default function Login() {
                         />
                         <h3 className="mb-3">Login</h3>
                     </div>
-                    <form action="/api/auth/register" method="POST">
+                    <form action="/api/auth/login" method="POST">
                         <div className="mb-3">
                             <label htmlFor="username" className="form-label">
                                 Username
