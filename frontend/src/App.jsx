@@ -16,6 +16,7 @@ export default function App() {
             </>
         )
     } else if (currentView === "login") {
+        console.log("login view")
         return (
             <Login authenticate={authenticate} />
         )
