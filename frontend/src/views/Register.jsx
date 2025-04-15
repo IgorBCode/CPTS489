@@ -3,6 +3,10 @@ import logo from '../assets/logo.png'
 import styles from '../styles/UserAuthForm.module.css'
 
 export default function Register() {
+    const [username, setUsername] = useState("");
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+
     return (
         <div className="container d-flex align-items-center justify-content-center vh-100">
             <div className="col-md-6">
@@ -22,7 +26,9 @@ export default function Register() {
                                 id="username"
                                 name="username"
                                 placeholder="Enter your username"
-                                required=""
+                                value={username}
+                                onChange={(e) => setUsername(e.target.value)}
+                                required
                             />
                         </div>
                         <div className="mb-3">
@@ -34,8 +40,10 @@ export default function Register() {
                                 className="form-control"
                                 id="email"
                                 name="email"
+                                value={email}
                                 placeholder="Enter your email"
-                                required=""
+                                onChange={(e) => setEmail(e.target.value)}
+                                required
                             />
                         </div>
                         <div className="mb-3">
@@ -48,11 +56,13 @@ export default function Register() {
                                 id="password"
                                 name="password"
                                 placeholder="Enter your password"
-                                required=""
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                                required
                             />
                         </div>
-                        <button 
-                            type="submit" 
+                        <button
+                            type="submit"
                             className={`btn w-100 ${styles["login-button"]}`}
                         >
                             <strong>Register</strong>
