@@ -20,6 +20,7 @@ export default function Register() {
                                 type="text"
                                 className="form-control"
                                 id="username"
+                                name="username"
                                 placeholder="Enter your username"
                                 required=""
                             />
@@ -32,6 +33,7 @@ export default function Register() {
                                 type="email"
                                 className="form-control"
                                 id="email"
+                                name="email"
                                 placeholder="Enter your email"
                                 required=""
                             />
@@ -44,6 +46,7 @@ export default function Register() {
                                 type="password"
                                 className="form-control"
                                 id="password"
+                                name="password"
                                 placeholder="Enter your password"
                                 required=""
                             />
