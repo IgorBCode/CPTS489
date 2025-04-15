@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import styles from '../styles/Post.module.css'
+import { Form } from 'react-router';
 
 export default function Post() {
     const [post, setPost] = useState(null);
@@ -84,7 +85,7 @@ export default function Post() {
             </p>
 
             <h2>Comments</h2>
-            <form onSubmit={handleCommentSubmit}>
+            <Form onSubmit={handleCommentSubmit}>
                 <textarea
                     value={newComment}
                     onChange={(e) => setNewComment(e.target.value)}
@@ -93,7 +94,7 @@ export default function Post() {
                     cols="50"
                 ></textarea><br />
                 <button type="submit">Post Comment</button>
-            </form>
+            </Form>
 
             <div>
                 {comments.map((comment, index) => (

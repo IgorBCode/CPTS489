@@ -1,4 +1,4 @@
-import { NavLink } from "react-router";
+import { Form, NavLink } from "react-router";
 
 export default function Boards() {
     return (
@@ -15,7 +15,7 @@ export default function Boards() {
                                 </a>
                             </div>
                             <div className="col-md-4">
-                                <form className="d-flex">
+                                <Form className="d-flex">
                                     <div className="input-group">
                                         <input
                                             className="form-control form-control-lg"
@@ -27,7 +27,7 @@ export default function Boards() {
                                             Search
                                         </button>
                                     </div>
-                                </form>
+                                </Form>
                             </div>
                         </div>
                     </div>

@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Form, redirect } from "react-router";
 import logo from '../assets/logo.png'
 import styles from '../styles/UserAuthForm.module.css'
 
@@ -6,6 +7,27 @@ export default function Register() {
     const [username, setUsername] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+
+    const handleRegister = async (e) => {
+        e.preventDefault();
+
+        const response = await fetch("/api/auth/register", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ username, email, password }),
+        });
+
+        if (response.ok) {
+            const data = await response.json();
+            console.log(data);
+            redirect("/");
+        } else {
+            const error = await response.json();
+            alert(error.error || "Login failed");
+        }
+    };
 
     return (
         <div className="container d-flex align-items-center justify-content-center vh-100">
@@ -15,7 +37,7 @@ export default function Register() {
                         <img className={styles["login-logo"]} src={logo}></img>
                         <h3 className="mb-3">Register</h3>
                     </div>
-                    <form action="/api/auth/register" method="POST">
+                    <Form action="/" method="POST" replace onSubmit={handleRegister}>
                         <div className="mb-3">
                             <label htmlFor="username" className="form-label">
                                 Username
@@ -67,7 +89,7 @@ export default function Register() {
                         >
                             <strong>Register</strong>
                         </button>
-                    </form>
+                    </Form>
                 </div>
             </div>
         </div>

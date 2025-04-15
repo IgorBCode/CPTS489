@@ -1,3 +1,5 @@
+import { Form } from "react-router";
+
 export default function Profile() {
     return (
         <div className="content-container">
@@ -45,7 +47,7 @@ export default function Profile() {
                 </div>
                 <div className="col-md-7 col-lg-8">
                     <h4 className="mb-3">User Info</h4>
-                    <form className="needs-validation" noValidate="">
+                    <Form className="needs-validation">
                         <div className="row g-3">
                             <div className="col-sm-6">
                                 <label htmlFor="firstName" className="form-label">
@@ -112,7 +114,7 @@ export default function Profile() {
                                 </button>
                             </div>
                         </div>
-                    </form>
+                    </Form>
                 </div>
             </div>
         </div>

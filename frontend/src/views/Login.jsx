@@ -1,12 +1,11 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router";
+import { Form, redirect } from "react-router";
 import logo from '../assets/logo.png'
 import styles from '../styles/UserAuthForm.module.css'
 
 export default function Login() {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
-    const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
         e.preventDefault(); // Prevent default form submission
@@ -24,7 +23,7 @@ export default function Login() {
                 const data = await response.json();
                 alert("Login successful!");
                 console.log(data); // Handle login success (e.g., store token, redirect)
-                navigate("/")
+                redirect("/");
             } else {
                 const error = await response.json();
                 alert(error.error || "Login failed");
@@ -43,7 +42,7 @@ export default function Login() {
                         <img className={styles["login-logo"]} src={logo}></img>
                         <h3 className="mb-3">Login</h3>
                     </div>
-                    <form onSubmit={handleSubmit}>
+                    <Form onSubmit={handleSubmit}>
                         <div className="mb-3">
                             <label htmlFor="username" className="form-label">
                                 Username
@@ -76,7 +75,7 @@ export default function Login() {
                         >
                             <strong>Login</strong>
                         </button>
-                    </form>
+                    </Form>
                 </div>
             </div>
         </div>

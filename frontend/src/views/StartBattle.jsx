@@ -6,7 +6,7 @@ export default function StartBattle() {
                 <h3 className="text-center mb-4">Start Battle!</h3>
                 <hr />
                 <div className="container text-center">
-                    <form action="">
+                    <Form>
                         <div className="row">
                             <div className="col">
                                 <h3>Board 1</h3>
@@ -39,7 +39,7 @@ export default function StartBattle() {
                             </div>
                         </div>
                         <button className="btn btn-danger btn-lg mt-2">Fight!</button>
-                    </form>
+                    </Form>
                 </div>
             </div>
         </>

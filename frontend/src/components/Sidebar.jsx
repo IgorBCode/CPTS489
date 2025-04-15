@@ -59,9 +59,9 @@ function JoinedBoards() {
         <div className={styles["my-boards"]}>
             <h1>Your Boards</h1>
             <ul>
-                <a href="#"><li>Board 1</li></a>
-                <a href="#"><li>Board 2</li></a>
-                <a href="#"><li>Board 3</li></a>
+                <NavLink><li>Board 1</li></NavLink>
+                <NavLink><li>Board 2</li></NavLink>
+                <NavLink><li>Board 3</li></NavLink>
             </ul>
         </div>
     )
@@ -89,7 +89,7 @@ function Login({ icon }) {
     return (
         <div className={`dropup ${styles["login"]}`}>
             <div className={styles["login-icon"]}>{icon}</div>
-            <div className={styles["dropdown-toggle"]} data-bs-toggle="dropdown" >Sign In/Sign Up</div>
+            <div className={styles["dropdown-toggle"]} data-bs-toggle="dropdown">Sign In/Sign Up</div>
                 <ul className={`dropdown-menu ${styles["login-menu"]}`}>
                     <li><NavLink to="login" className={styles["dropdown-item"]}>Sign In</NavLink></li>
                     <li><NavLink to="register" className={styles["dropdown-item"]}>Sign Up</NavLink></li>

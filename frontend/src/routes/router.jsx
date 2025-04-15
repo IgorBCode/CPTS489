@@ -8,7 +8,7 @@ import BoardRoutes from "./boardRoutes.jsx";
 
 const router = createBrowserRouter([
     {
-        path: "/", 
+        path: "/",
         children: [
             {
                 index: true,
