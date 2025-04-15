@@ -1,63 +1,64 @@
 import { useState } from 'react';
+import { NavLink } from 'react-router';
 import * as Icons from './images/sidebar-icons';
-import './styles/Sidebar.css'
+import styles from '../styles/Sidebar.module.css'
 import logo from './images/logo.png'
 
 export function Logo() {
     return (
-        <img className="logo" src={logo}></img>
+        <img className={styles["logo"]} src={logo}></img>
     )
 }
 
-export default function Sidebar({ updateView }) {
+export default function Sidebar() {
     const [active_index, setActive] = useState(0);
 
     return (
-        <div className = "sidebar">
-            <div><Logo/></div>
-            <ul className = "nav-menu">
-                <li><a className="nav-link" href="#"><NavButton 
+        <div className={styles["sidebar"]}>
+            <div><Logo /></div>
+            <ul className={styles["nav-menu"]}>
+                <li><NavLink className={styles["nav-link"]} to=""><NavButton
                     title="Home"
-                    icon = {<Icons.HomeIcon fillColor = "white"/>}
+                    icon={<Icons.HomeIcon fillColor="white" />}
                     isActive={active_index === 0}
                     toggleActive={() => setActive(0)}
-                /></a></li>
-                <li><a className="nav-link" href="#"><NavButton 
+                /></NavLink></li>
+                <li><NavLink className={styles["nav-link"]} to="boards"><NavButton
                     title="Boards"
-                    icon = {<Icons.BoardsIcon fillColor = "white"/>}
+                    icon={<Icons.BoardsIcon fillColor="white" />}
                     isActive={active_index === 1}
                     toggleActive={() => setActive(1)}
-                /></a></li>
-                <li><a className="nav-link" href="#"><NavButton 
+                /></NavLink></li>
+                <li><NavLink className={styles["nav-link"]} to="battles"><NavButton
                     title="Battles"
-                    icon = {<Icons.BattlesIcon fillColor = "white"/>}
+                    icon={<Icons.BattlesIcon fillColor="white" />}
                     isActive={active_index === 2}
                     toggleActive={() => setActive(2)}
-                /></a></li>
-                <li><a className="nav-link" href="#"><NavButton 
+                /></NavLink></li>
+                <li><NavLink className={styles["nav-link"]} to=""><NavButton
                     title="Awards"
-                    icon = {<Icons.AwardsIcon fillColor = "white"/>}
+                    icon={<Icons.AwardsIcon fillColor="white" />}
                     isActive={active_index === 3}
                     toggleActive={() => setActive(3)}
-                /></a></li>
-                <li><a className="nav-link" href="#"><NavButton 
+                /></NavLink></li>
+                <li><NavLink className={styles["nav-link"]} to=""><NavButton
                     title="Profile"
-                    icon = {<Icons.ProfileIcon fillColor = "white"/>}
+                    icon={<Icons.ProfileIcon fillColor="white" />}
                     isActive={active_index === 4}
                     toggleActive={() => setActive(4)}
-                /></a></li>
+                /></NavLink></li>
             </ul>
-            <div><JoinedBoards/></div>
-            <div><Login icon={<Icons.LoginIcon fillColor = "white"/>}/></div>
+            <div><JoinedBoards /></div>
+            <div><Login icon={<Icons.LoginIcon fillColor="white" />} /></div>
         </div>
     )
 }
 
 function JoinedBoards() {
     return (
-        <div  className="my-boards">
+        <div className={styles["my-boards"]}>
             <h1>Your Boards</h1>
-            <ul>     
+            <ul>
                 <a href="#"><li>Board 1</li></a>
                 <a href="#"><li>Board 2</li></a>
                 <a href="#"><li>Board 3</li></a>
@@ -66,7 +67,7 @@ function JoinedBoards() {
     )
 }
 
-function Login({icon}) {
+function Login({ icon }) {
     const [menuVisible, setMenuVisible] = useState(false)
 
     const toggleMenu = () => {
@@ -74,15 +75,15 @@ function Login({icon}) {
     }
 
     return (
-        <div className="login" onClick={toggleMenu}>
-            <div className="login-icon">{icon}</div>
+        <div className={styles["login"]} onClick={toggleMenu}>
+            <div className={styles["login-icon"]}>{icon}</div>
             <div>Sign In/Sign Up</div>
             {menuVisible && (
-                <div className="login-menu">
+                <div className={styles["login-menu"]}>
                     <ul>
-                        <li><a href="login.html">Sign In</a></li>
-                        <li><a href="register.html">Sign Up</a></li>
-                        <li><a href="index.html">Sign Out</a></li>
+                        <li><NavLink to="login">Sign In</NavLink></li>
+                        <li><NavLink to="register">Sign Up</NavLink></li>
+                        <li><NavLink to="">Sign Out</NavLink></li>
                     </ul>
                 </div>
             )}
@@ -90,11 +91,11 @@ function Login({icon}) {
     )
 }
 
-function NavButton({title, isActive, toggleActive, icon}) {
+function NavButton({ title, isActive, toggleActive, icon }) {
     return (
-        <button className={`nav-button ${isActive ? "nav-button-active" : ""}`} onClick={toggleActive}>
-            <div className="nav-icon">{icon}</div>
-            <p className="nav-title">{title}</p>
+        <button className={`${styles["nav-button"]} ${isActive ? styles["nav-button-active"] : ""}`} onClick={toggleActive}>
+            <div className={styles["nav-icon"]}>{icon}</div>
+            <p className={styles["nav-title"]}>{title}</p>
         </button>
     )
 }
