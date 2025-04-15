@@ -68,6 +68,24 @@ function JoinedBoards() {
 }
 
 function Login({ icon }) {
+    const handleLogout = async () => {
+        try {
+            const response = await fetch("/api/auth/logout", {
+                method: "POST",
+                credentials: "include",
+            });
+
+            if (response.ok) {
+                alert("You have been logged out successfully!");
+            } else {
+                alert("Failed to log out. Please try again.");
+            }
+        } catch (err) {
+            console.error("Error during logout:", err);
+            alert("An error occurred while logging out.");
+        }
+    };
+
     return (
         <div className={`dropup ${styles["login"]}`}>
             <div className={styles["login-icon"]}>{icon}</div>
@@ -75,7 +93,7 @@ function Login({ icon }) {
                 <ul className={`dropdown-menu ${styles["login-menu"]}`}>
                     <li><NavLink to="login" className={styles["dropdown-item"]}>Sign In</NavLink></li>
                     <li><NavLink to="register" className={styles["dropdown-item"]}>Sign Up</NavLink></li>
-                    <li><NavLink to="" className={styles["dropdown-item"]}>Sign Out</NavLink></li>
+                    <li><NavLink to="/" onClick={handleLogout} className={styles["dropdown-item"]}>Sign Out</NavLink></li>
                 </ul>
         </div>
     )
