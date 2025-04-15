@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import './styles/Post.css'
+import styles from '../styles/Post.module.css'
 import * as Icons from './images/post-icons'
 
 // For showing when the post was created on the Card
@@ -26,11 +26,11 @@ function LikeButton({isClicked, toggleClicked}) {
     return (
         <div>
             {isClicked ? (
-                <button className="like-button" onClick={toggleClicked}>
+                <button className={styles["like-button"]} onClick={toggleClicked}>
                     <Icons.LikeIconClicked fillColor="#8d00e9"/>
                 </button>
                 ) : (
-                    <button className="like-button" onClick={toggleClicked}>
+                    <button className={styles["like-button"]} onClick={toggleClicked}>
                         <Icons.LikeIcon fillColor="#8d00e9"/>
                     </button>
                 )}
@@ -74,30 +74,30 @@ export default function Card({ postTitle, postUser, postDate, upvotes, downvotes
     }
     
     return (
-        <div className="post">
-            <div className="post-content">
-                <div className="like-buttons">
-                    <div className="like-container">
+        <div className={styles.post}>
+            <div className={styles["post-content"]}>
+                <div className={styles["like-buttons"]}>
+                    <div className={styles["like-container"]}>
                         <LikeButton
                             isClicked={index === 0}
                             toggleClicked={() => handleClick(0)}
                         />
-                        <div className="vote-count">{upvotes}</div>
+                        <div className={styles["vote-count"]}>{cur_upvotes}</div>
                     </div>
-                    <div className="dislike-container">
+                    <div className={styles["dislike-container"]}>
                         <DislikeButton
                             isClicked={index === 1}
                             toggleClicked={() => handleClick(1)}
                         />
-                        <div className="vote-count">{downvotes}</div>
+                        <div className={styles["vote-count"]}>{cur_downvotes}</div>
                     </div>
                 </div>
-                <div className="post-info">
+                <div className={styles["post-info"]}>
                     <a href="#">{postTitle}</a>
-                    <p2>Posted by {postUser} - {getTimeDifference(postDate)}</p2>
-                    <p3>{commentCount} Comments</p3>
+                    <p>Posted by {postUser} - {getTimeDifference(postDate)}</p>
+                    <p>{commentCount} Comments</p>
                 </div>
-                <div className="board-info">
+                <div className={styles["board-info"]}>
                     <span>Board: <a href="#">{boardName}</a></span>
                 </div>
             </div>
@@ -109,11 +109,11 @@ function DislikeButton({isClicked, toggleClicked}) {
     return (
         <div>
             {isClicked ? (
-                <button className="like-button" onClick={toggleClicked}>
+                <button className={styles["like-button"]} onClick={toggleClicked}>
                     <Icons.DislikeIconClicked fillColor="#ff2aee"/>
                 </button>
                 ) : (
-                    <button className="like-button" onClick={toggleClicked}>
+                    <button className={styles["like-button"]} onClick={toggleClicked}>
                         <Icons.DislikeIcon fillColor="#ff2aee"/>
                     </button>
                 )}

@@ -1,103 +1,109 @@
+import React, { useEffect, useState } from 'react'
+import styles from '../styles/Post.module.css'
+
 export default function Post() {
+    const [post, setPost] = useState(null);
+    const [comments, setComments] = useState([]);
+    const [newComment, setNewComment] = useState('');
     const params = new URLSearchParams(window.location.search);
     const postId = params.get('id');
 
-    // Get post details
-    fetch(`/api/posts/${postId}`)
-        .then(res => res.json())
-        .then(post => {
-            document.title = post.title;
-            document.getElementById('post-title').textContent = post.title;
-            document.getElementById('post-content').textContent = post.content;
-            document.getElementById('post-author').textContent = `By: ${post.author?.username || 'Unknown'}`;
-            document.getElementById('vote-count').textContent = `Upvotes: ${post.upvotes} | Downvotes: ${post.downvotes}`;
-        })
-        .catch(err => {
-            console.error('Error loading post:', err);
-        });
+    useEffect(() => {
+        if (postId) {
+            fetch(`/api/posts/${postId}`)
+                .then(res => res.json())
+                .then(data => {
+                    setPost(data);
+                    document.title = data.title;
+                })
+                .catch(err => console.error('Error loading post:', err));
+        } else {
+            console.error('Invalid postId:', postId);
+        }
+    }, [postId]);
 
-    // Load comments
-    function loadComments() {
-        fetch(`/api/comments/${postId}`)
-            .then(res => res.json())
-            .then(comments => {
-                const container = document.getElementById('comments-list');
-                container.innerHTML = '';
-                comments.forEach(comment => {
-                    const el = document.createElement('div');
-                    el.innerHTML = `
-                                <p>${comment.content}</p>
-                                <p><small>By: ${comment.author?.username || 'Unknown'}</small></p>
-                                <hr>
-                            `;
-                    container.appendChild(el);
-                });
-            })
-            .catch(err => {
-                console.error('Error loading comments:', err);
-            });
-    }
+    useEffect(() => {
+        if (postId) {
+            fetch(`/api/comments/${postId}`)
+                .then(res => res.json())
+                .then(data => setComments(data))
+                .catch(err => console.error('Error loading comments:', err));
+        }
+    }, [postId]);
 
-    loadComments();
-
-    // Handle new comment
-    document.getElementById('comment-form').addEventListener('submit', function (e) {
+    const handleCommentSubmit = (e) => {
         e.preventDefault();
-        const content = document.getElementById('comment-content').value;
-
         fetch('/api/comments', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             credentials: 'include',
-            body: JSON.stringify({ content, postId })
+            body: JSON.stringify({ content: newComment, postId })
         })
             .then(res => res.json())
             .then(() => {
-                document.getElementById('comment-content').value = '';
-                loadComments();
+                setNewComment('');
+                fetch(`/api/comments/${postId}`)
+                    .then(res => res.json())
+                    .then(data => setComments(data));
             })
             .catch(err => {
                 alert('Error posting comment. Are you logged in?');
                 console.error(err);
             });
-    });
+    };
 
-    // Voting logic
-    function vote(type) {
+    const vote = (type) => {
         fetch(`/api/posts/${postId}/${type}`, {
             method: 'POST',
             credentials: 'include'
         })
             .then(res => res.json())
-            .then(updatedPost => {
-                document.getElementById('vote-count').textContent =
-                    `Upvotes: ${updatedPost.upvotes} | Downvotes: ${updatedPost.downvotes}`;
-            })
+            .then(updatedPost => setPost(updatedPost))
             .catch(err => {
                 alert('Error voting. Are you logged in?');
                 console.error(err);
             });
+    };
+
+    if (!post) {
+        return <div>Loading...</div>;
     }
 
-    <div className="board-post">
-        <nav>
-            <a href="/index.html">Home</a> |
-        </nav>
-        <h1 id="post-title">Loading...</h1>
-        <p id="post-content"></p>
-        <p id="post-author"></p>
-        <p id="vote-count"></p>
-        <p>
-            <button onclick="vote('upvote')">⬆️ Upvote</button>
-            <button onclick="vote('downvote')">⬇️ Downvote</button>
-        </p>
+    return (
+        <div className={styles.post}>
+            <nav>
+                <a href="/index.html">Home</a> |
+            </nav>
+            <h1>{post.title}</h1>
+            <p>{post.content}</p>
+            <p>By: {post.author?.username || 'Unknown'}</p>
+            <p>Upvotes: {post.upvotes} | Downvotes: {post.downvotes}</p>
+            <p>
+                <button onClick={() => vote('upvote')}>⬆️ Upvote</button>
+                <button onClick={() => vote('downvote')}>⬇️ Downvote</button>
+            </p>
 
-        <h2>Comments</h2>
-        <form id="comment-form">
-            <textarea id="comment-content" placeholder="Write a comment..." rows="3" cols="50"></textarea><br />
-            <button type="submit">Post Comment</button>
-        </form>
+            <h2>Comments</h2>
+            <form onSubmit={handleCommentSubmit}>
+                <textarea
+                    value={newComment}
+                    onChange={(e) => setNewComment(e.target.value)}
+                    placeholder="Write a comment..."
+                    rows="3"
+                    cols="50"
+                ></textarea><br />
+                <button type="submit">Post Comment</button>
+            </form>
 
-        <div id="comments-list"></div>
-    </div>
+            <div>
+                {comments.map((comment, index) => (
+                    <div key={index}>
+                        <p>{comment.content}</p>
+                        <p><small>By: {comment.author?.username || 'Unknown'}</small></p>
+                        <hr />
+                    </div>
+                ))}
+            </div>
+        </div>
+    );
 }

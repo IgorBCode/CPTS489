@@ -1,4 +1,10 @@
+import React, { useState } from "react";
+import fightSvg from "../assets/fight.svg";
+
 export default function Login() {
+    const [username, setUsername] = useState("");
+    const [password, setPassword] = useState("");
+
     return (
         <div className="container d-flex align-items-center justify-content-center vh-100">
             <div className="col-md-6">
@@ -6,11 +12,11 @@ export default function Login() {
                     <div className="d-flex flex-column align-items-center">
                         <h2>Board Battles</h2>
                         <img
-                            src="../assets/fight.svg"
+                            src={fightSvg}
                             className="img-fluid mb-2"
                             style={{ maxWidth: 100, height: "auto" }}
                         />
-                        <h3 className="mb-3">Register</h3>
+                        <h3 className="mb-3">Login</h3>
                     </div>
                     <form action="/api/auth/register" method="POST">
                         <div className="mb-3">
@@ -22,6 +28,7 @@ export default function Login() {
                                 className="form-control"
                                 id="username"
                                 value={username}
+                                onChange={(e) => setUsername(e.target.value)}
                                 required
                             />
                         </div>
@@ -34,6 +41,7 @@ export default function Login() {
                                 className="form-control"
                                 id="password"
                                 value={password}
+                                onChange={(e) => setPassword(e.target.value)}
                                 required
                             />
                         </div>

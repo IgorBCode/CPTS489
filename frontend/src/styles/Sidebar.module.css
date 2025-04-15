@@ -61,7 +61,7 @@
 }
 
 .nav-link {
-  text-decoration: none;;
+  text-decoration: none;
 }
 
 .nav-icon {
@@ -115,6 +115,7 @@
   color: white;
   display: flex;
   font-weight: 700;
+  cursor: pointer;
 }
 
 .login-icon {

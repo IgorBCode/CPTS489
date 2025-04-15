@@ -1,3 +1,6 @@
+import React, { useState } from "react";
+import fightSvg from "../assets/fight.svg";
+
 export default function Register() {
     return (
         <div className="container d-flex align-items-center justify-content-center vh-100">
@@ -6,7 +9,7 @@ export default function Register() {
                     <div className="d-flex flex-column align-items-center">
                         <h2>Board Battles</h2>
                         <img
-                            src="../assets/fight.svg"
+                            src={fightSvg}
                             className="img-fluid mb-2"
                             style={{ maxWidth: 100, height: "auto" }}
                         />
