@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Form, redirect } from "react-router";
+import { Form, redirect, useNavigate } from "react-router";
 import logo from '../assets/logo.png'
 import styles from '../styles/UserAuthForm.module.css'
 
@@ -7,6 +7,7 @@ export default function Register() {
     const [username, setUsername] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const navigate = useNavigate();
 
     const handleRegister = async (e) => {
         e.preventDefault();
@@ -22,7 +23,6 @@ export default function Register() {
         if (response.ok) {
             const data = await response.json();
             console.log(data);
-            redirect("/");
         } else {
             const error = await response.json();
             alert(error.error || "Login failed");
@@ -37,7 +37,7 @@ export default function Register() {
                         <img className={styles["login-logo"]} src={logo}></img>
                         <h3 className="mb-3">Register</h3>
                     </div>
-                    <Form action="/" method="POST" replace onSubmit={handleRegister}>
+                    <Form action="/" method="POST" onSubmit={(e) => {handleRegister(e); navigate("/")}}>
                         <div className="mb-3">
                             <label htmlFor="username" className="form-label">
                                 Username
