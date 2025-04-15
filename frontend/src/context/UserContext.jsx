@@ -1,9 +1,11 @@
-import { createContext, useState, useEffect} from 'react'
+import { createContext, useState, useEffect, useRef} from 'react'
 
 export const UserContext = createContext()
 
 export const UserProvider = ({ children }) => {
+    const isLoading = useRef(true)
     const [user, setUser] = useState(null)
+    const [boards, setBoards] = useState([])
 
     const fetchUserData = async() => {
         try {
@@ -25,12 +27,32 @@ export const UserProvider = ({ children }) => {
         }
     }
 
+    const getBoards = async () => {
+        try {
+            const response = await fetch('/api/boards/', {
+                method: 'GET'
+            });
+
+            const data = await response.json()
+            setBoards(data.boards)
+            
+            console.log("Fetched boards successfully")
+        } catch (err) {
+            console.log("Couldn't fetch boards")
+        }
+    }
+
+    
+
     useEffect(() => {
+        if (!isLoading.current) return
         fetchUserData()
+        getBoards()
+        isLoading.current = false
     }, [])
 
     return (
-        <UserContext.Provider value={{ user }}>
+        <UserContext.Provider value={{ user, boards }}>
             {children}
         </UserContext.Provider>
     )

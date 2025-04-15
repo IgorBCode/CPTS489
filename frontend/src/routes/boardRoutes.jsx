@@ -3,6 +3,7 @@ import Boards from "../views/Boards.jsx";
 import Board from "../views/Board.jsx";
 import Post from "../views/Post.jsx";
 import CreatePost from "../views/CreatePost.jsx";
+import CreateBoard, { createBoardAction } from "../views/CreateBoard.jsx";
 import Awards from "../views/Awards.jsx";
 
 const BoardRoutes = [
@@ -12,6 +13,11 @@ const BoardRoutes = [
             {
                 index: true,
                 element: <Boards />,
+            },
+            {
+                path: "create",
+                element: <CreateBoard />,
+                action: createBoardAction,
             },
             {
                 path: ":boardId",

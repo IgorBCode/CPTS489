@@ -3,16 +3,16 @@ import { Form, NavLink } from "react-router";
 export default function Boards() {
     return (
         <>
-            <div className="content-container ">
+            <div className="content-container">
             <h1 className="text-center">Explore Communities</h1>
                 {/* list of boards */}
                 <div className="row">
                     <div className="row align-items-start">
                         <div className="row align-items-start">
                             <div className="col">
-                                <a href="#" className="btn btn-success btn-md">
-                                    + Create Board
-                                </a>
+                                <NavLink to="create" className="btn btn-success btn-md">
+                                    Create Board
+                                </NavLink>
                             </div>
                             <div className="col-md-4">
                                 <Form className="d-flex">

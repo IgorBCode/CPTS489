@@ -61,7 +61,7 @@ export default function Sidebar() {
 
 function JoinedBoards() {
     
-    const { user } = useContext(UserContext)
+    const { user, boards } = useContext(UserContext)
     
     return (
         <div className={styles["my-boards"]}>
@@ -80,6 +80,8 @@ function JoinedBoards() {
 }
 
 function Login({ icon }) {
+    const { user } = useContext(UserContext);
+
     const handleLogout = async () => {
         try {
             const response = await fetch("/api/auth/logout", {
@@ -98,6 +100,8 @@ function Login({ icon }) {
             alert("An error occurred while logging out.");
         }
     };
+
+    console.log(user);
 
     return (
         <div className={`dropup ${styles["login"]}`}>

@@ -60,14 +60,14 @@
     line-height: 2rem;
 }
 
-.post-info a {
+.post-info h1 {
     font-size: 1.5rem;
     color: #ff2aee;
     text-decoration: none;
     font-weight: bold;
 }
 
-.post-info a:hover {
+.post-info h1:hover {
     text-decoration: underline;
 }
 

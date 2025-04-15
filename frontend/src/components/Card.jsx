@@ -95,12 +95,12 @@ export default function Card({ postTitle, postUser, postDate, upvotes, downvotes
                         </div>
                     </div>
                     <div className={styles["post-info"]}>
-                        <NavLink>{postTitle}</NavLink>
+                        <h1>{postTitle}</h1>
                         <p>Posted by {postUser} - {getTimeDifference(postDate)}</p>
                         <p>{commentCount} Comments</p>
                     </div>
                     <div className={styles["board-info"]}>
-                        <span>Board: <NavLink>{boardName}</NavLink></span>
+                        <span>Board: {boardName}</span>
                     </div>
                 </div>
             </NavLink>
