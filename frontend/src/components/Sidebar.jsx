@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { NavLink } from 'react-router';
+import { NavLink, Outlet } from 'react-router';
 import * as Icons from './sidebar-icons';
 import styles from '../styles/Sidebar.module.css'
 import logo from '../assets/logo.png'
@@ -14,43 +14,47 @@ export default function Sidebar() {
     const [active_index, setActive] = useState(0);
 
     return (
-        <div className={styles["sidebar"]}>
-            <div><Logo /></div>
-            <ul className={styles["nav-menu"]}>
-                <li><NavLink className={styles["nav-link"]} to=""><NavButton
-                    title="Home"
-                    icon={<Icons.HomeIcon fillColor="white" />}
-                    isActive={active_index === 0}
-                    toggleActive={() => setActive(0)}
-                /></NavLink></li>
-                <li><NavLink className={styles["nav-link"]} to="boards"><NavButton
-                    title="Boards"
-                    icon={<Icons.BoardsIcon fillColor="white" />}
-                    isActive={active_index === 1}
-                    toggleActive={() => setActive(1)}
-                /></NavLink></li>
-                <li><NavLink className={styles["nav-link"]} to="battles"><NavButton
-                    title="Battles"
-                    icon={<Icons.BattlesIcon fillColor="white" />}
-                    isActive={active_index === 2}
-                    toggleActive={() => setActive(2)}
-                /></NavLink></li>
-                <li><NavLink className={styles["nav-link"]} to=""><NavButton
-                    title="Awards"
-                    icon={<Icons.AwardsIcon fillColor="white" />}
-                    isActive={active_index === 3}
-                    toggleActive={() => setActive(3)}
-                /></NavLink></li>
-                <li><NavLink className={styles["nav-link"]} to=""><NavButton
-                    title="Profile"
-                    icon={<Icons.ProfileIcon fillColor="white" />}
-                    isActive={active_index === 4}
-                    toggleActive={() => setActive(4)}
-                /></NavLink></li>
-            </ul>
-            <div><JoinedBoards /></div>
-            <div><Login icon={<Icons.LoginIcon fillColor="white" />} /></div>
-        </div>
+        <>
+            <div className={styles["sidebar"]}>
+                <div><Logo /></div>
+                <ul className={styles["nav-menu"]}>
+                    <li><NavLink className={styles["nav-link"]} to=""><NavButton
+                        title="Home"
+                        icon={<Icons.HomeIcon fillColor="white" />}
+                        isActive={active_index === 0}
+                        toggleActive={() => setActive(0)}
+                    /></NavLink></li>
+                    <li><NavLink className={styles["nav-link"]} to="boards"><NavButton
+                        title="Boards"
+                        icon={<Icons.BoardsIcon fillColor="white" />}
+                        isActive={active_index === 1}
+                        toggleActive={() => setActive(1)}
+                    /></NavLink></li>
+                    <li><NavLink className={styles["nav-link"]} to="battles"><NavButton
+                        title="Battles"
+                        icon={<Icons.BattlesIcon fillColor="white" />}
+                        isActive={active_index === 2}
+                        toggleActive={() => setActive(2)}
+                    /></NavLink></li>
+                    <li><NavLink className={styles["nav-link"]} to=""><NavButton
+                        title="Awards"
+                        icon={<Icons.AwardsIcon fillColor="white" />}
+                        isActive={active_index === 3}
+                        toggleActive={() => setActive(3)}
+                    /></NavLink></li>
+                    <li><NavLink className={styles["nav-link"]} to=""><NavButton
+                        title="Profile"
+                        icon={<Icons.ProfileIcon fillColor="white" />}
+                        isActive={active_index === 4}
+                        toggleActive={() => setActive(4)}
+                    /></NavLink></li>
+                </ul>
+                <div><JoinedBoards /></div>
+                <div><Login icon={<Icons.LoginIcon fillColor="white" />} /></div>
+            </div>
+
+            <Outlet />
+        </>
     )
 }
 
@@ -90,11 +94,11 @@ function Login({ icon }) {
         <div className={`dropup ${styles["login"]}`}>
             <div className={styles["login-icon"]}>{icon}</div>
             <div className={styles["dropdown-toggle"]} data-bs-toggle="dropdown">Sign In/Sign Up</div>
-                <ul className={`dropdown-menu ${styles["login-menu"]}`}>
-                    <li><NavLink to="login" className={styles["dropdown-item"]}>Sign In</NavLink></li>
-                    <li><NavLink to="register" className={styles["dropdown-item"]}>Sign Up</NavLink></li>
-                    <li><NavLink to="/" onClick={handleLogout} className={styles["dropdown-item"]}>Sign Out</NavLink></li>
-                </ul>
+            <ul className={`dropdown-menu ${styles["login-menu"]}`}>
+                <li><NavLink to="login" className={styles["dropdown-item"]}>Sign In</NavLink></li>
+                <li><NavLink to="register" className={styles["dropdown-item"]}>Sign Up</NavLink></li>
+                <li><NavLink to="/" onClick={handleLogout} className={styles["dropdown-item"]}>Sign Out</NavLink></li>
+            </ul>
         </div>
     )
 }

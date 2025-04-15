@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import styles from '../styles/Post.module.css'
 import * as Icons from './post-icons'
+import { NavLink } from 'react-router';
 
 // For showing when the post was created on the Card
 function getTimeDifference(date) {
@@ -22,23 +23,23 @@ function getTimeDifference(date) {
     return seconds + (seconds === 1 ? " second ago" : " seconds ago");
 }
 
-function LikeButton({isClicked, toggleClicked}) {
+function LikeButton({ isClicked, toggleClicked }) {
     return (
         <div>
             {isClicked ? (
                 <button className={styles["like-button"]} onClick={toggleClicked}>
-                    <Icons.LikeIconClicked fillColor="#8d00e9"/>
+                    <Icons.LikeIconClicked fillColor="#8d00e9" />
                 </button>
-                ) : (
-                    <button className={styles["like-button"]} onClick={toggleClicked}>
-                        <Icons.LikeIcon fillColor="#8d00e9"/>
-                    </button>
-                )}
+            ) : (
+                <button className={styles["like-button"]} onClick={toggleClicked}>
+                    <Icons.LikeIcon fillColor="#8d00e9" />
+                </button>
+            )}
         </div>
     )
 }
 
-export default function Card({ postTitle, postUser, postDate, upvotes, downvotes, boardName, commentCount}) {
+export default function Card({ postTitle, postUser, postDate, upvotes, downvotes, boardName, commentCount }) {
     const [index, setClicked] = useState(2); // 0 = liked, 1 = disliked, 2 = none
     const [cur_upvotes, setUpvotes] = useState(upvotes);
     const [cur_downvotes, setDownvotes] = useState(downvotes);
@@ -72,51 +73,53 @@ export default function Card({ postTitle, postUser, postDate, upvotes, downvotes
             }
         }
     }
-    
+
     return (
         <div className={styles.post}>
-            <div className={styles["post-content"]}>
-                <div className={styles["like-buttons"]}>
-                    <div className={styles["like-container"]}>
-                        <LikeButton
-                            isClicked={index === 0}
-                            toggleClicked={() => handleClick(0)}
-                        />
-                        <div className={styles["vote-count"]}>{cur_upvotes}</div>
+            <NavLink style={{ textDecoration: "none", color: "inherit" }}>
+                <div className={styles["post-content"]}>
+                    <div className={styles["like-buttons"]}>
+                        <div className={styles["like-container"]}>
+                            <LikeButton
+                                isClicked={index === 0}
+                                toggleClicked={() => handleClick(0)}
+                            />
+                            <div className={styles["vote-count"]}>{cur_upvotes}</div>
+                        </div>
+                        <div className={styles["dislike-container"]}>
+                            <DislikeButton
+                                isClicked={index === 1}
+                                toggleClicked={() => handleClick(1)}
+                            />
+                            <div className={styles["vote-count"]}>{cur_downvotes}</div>
+                        </div>
                     </div>
-                    <div className={styles["dislike-container"]}>
-                        <DislikeButton
-                            isClicked={index === 1}
-                            toggleClicked={() => handleClick(1)}
-                        />
-                        <div className={styles["vote-count"]}>{cur_downvotes}</div>
+                    <div className={styles["post-info"]}>
+                        <NavLink>{postTitle}</NavLink>
+                        <p>Posted by {postUser} - {getTimeDifference(postDate)}</p>
+                        <p>{commentCount} Comments</p>
+                    </div>
+                    <div className={styles["board-info"]}>
+                        <span>Board: <NavLink>{boardName}</NavLink></span>
                     </div>
                 </div>
-                <div className={styles["post-info"]}>
-                    <a href="#">{postTitle}</a>
-                    <p>Posted by {postUser} - {getTimeDifference(postDate)}</p>
-                    <p>{commentCount} Comments</p>
-                </div>
-                <div className={styles["board-info"]}>
-                    <span>Board: <a href="#">{boardName}</a></span>
-                </div>
-            </div>
+            </NavLink>
         </div>
     )
 }
 
-function DislikeButton({isClicked, toggleClicked}) {
+function DislikeButton({ isClicked, toggleClicked }) {
     return (
         <div>
             {isClicked ? (
                 <button className={styles["like-button"]} onClick={toggleClicked}>
-                    <Icons.DislikeIconClicked fillColor="#ff2aee"/>
+                    <Icons.DislikeIconClicked fillColor="#ff2aee" />
                 </button>
-                ) : (
-                    <button className={styles["like-button"]} onClick={toggleClicked}>
-                        <Icons.DislikeIcon fillColor="#ff2aee"/>
-                    </button>
-                )}
+            ) : (
+                <button className={styles["like-button"]} onClick={toggleClicked}>
+                    <Icons.DislikeIcon fillColor="#ff2aee" />
+                </button>
+            )}
         </div>
     )
 }
