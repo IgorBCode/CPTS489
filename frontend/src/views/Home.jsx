@@ -2,8 +2,8 @@ import Card from '../components/Card.jsx';
 
 export default function Home() {
     return (
-        <main className="container">
-            <div className="row">
+        <main className="container mt-4">
+            <div className="row flex-column gap-4">
                 <Card
                     postTitle="How much cheese is too much cheese?"
                     postUser="charlie"

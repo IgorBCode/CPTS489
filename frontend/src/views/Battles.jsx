@@ -1,6 +1,6 @@
 export default function Battles() {
     return (
-        <div className="content-container">
+        <div className="content-container flex-fill">
             <h3 className="text-center mb-4">Active Battles</h3>
             <hr />
             {/* battles */}

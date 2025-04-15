@@ -4,8 +4,8 @@
     linear-gradient(to right, #8d00e9, #ff2aee) border-box;
     border-radius: 10px;
     border: 1px solid transparent;
-    width: 100%;
-    margin: 10px;
+    width: calc(100% - 1rem);
+    margin-left: 0.5rem;
 }
 
 .post-content {

@@ -3,8 +3,8 @@ import { Form, NavLink } from "react-router";
 export default function Boards() {
     return (
         <>
+            <div className="content-container ">
             <h1 className="text-center">Explore Communities</h1>
-            <div className="content-container">
                 {/* list of boards */}
                 <div className="row">
                     <div className="row align-items-start">
@@ -38,7 +38,7 @@ export default function Boards() {
                                 Share your car pics, mod/fix tips, and talk about anything car
                                 related.
                             </p>
-                            <NavLink to="/board" className="btn btn-primary">
+                            <NavLink to="./" className="btn btn-primary">
                                 Explore
                             </NavLink>
                         </div>
@@ -50,7 +50,7 @@ export default function Boards() {
                                 Share recipes, restaurant recommendations, and anything else food
                                 related.
                             </p>
-                            <NavLink to="/board" className="btn btn-primary">
+                            <NavLink to="./" className="btn btn-primary">
                                 Explore
                             </NavLink>
                         </div>
@@ -61,7 +61,7 @@ export default function Boards() {
                             <p className="text-muted">
                                 A place where you can learn how to center a div.
                             </p>
-                            <NavLink to="/board" className="btn btn-primary">
+                            <NavLink to="./" className="btn btn-primary">
                                 Explore
                             </NavLink>
                         </div>
@@ -73,7 +73,7 @@ export default function Boards() {
                                 Join other pet owner to discuss anything related to our furry
                                 friends.
                             </p>
-                            <NavLink to="/board" className="btn btn-primary">
+                            <NavLink to="./" className="btn btn-primary">
                                 Explore
                             </NavLink>
                         </div>
@@ -82,7 +82,7 @@ export default function Boards() {
                         <div className="card p-3">
                             <h5 className="card-title">🎮 Gaming</h5>
                             <p className="text-muted">All things video game related.</p>
-                            <NavLink to="/board" className="btn btn-primary">
+                            <NavLink to="./" className="btn btn-primary">
                                 Explore
                             </NavLink>
                         </div>
@@ -94,7 +94,7 @@ export default function Boards() {
                                 Join a community of artists sharing, exploring, and appreciating
                                 art.
                             </p>
-                            <NavLink to="/board" className="btn btn-primary">
+                            <NavLink to="./" className="btn btn-primary">
                                 Explore
                             </NavLink>
                         </div>
@@ -105,7 +105,7 @@ export default function Boards() {
                             <p className="text-muted">
                                 Join the discussion about all things movie related
                             </p>
-                            <NavLink to="/board" className="btn btn-primary">
+                            <NavLink to="./" className="btn btn-primary">
                                 Explore
                             </NavLink>
                         </div>

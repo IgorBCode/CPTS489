@@ -63,9 +63,9 @@ function JoinedBoards() {
         <div className={styles["my-boards"]}>
             <h1>Your Boards</h1>
             <ul>
-                <NavLink><li>Board 1</li></NavLink>
-                <NavLink><li>Board 2</li></NavLink>
-                <NavLink><li>Board 3</li></NavLink>
+                <NavLink to="/boards/"><li>Board 1</li></NavLink>
+                <NavLink to="/boards/"><li>Board 2</li></NavLink>
+                <NavLink to="/boards/"><li>Board 3</li></NavLink>
             </ul>
         </div>
     )

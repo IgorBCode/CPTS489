@@ -4,6 +4,11 @@
     box-sizing: border-box;
 }
 
-html, #root {
+html {
+    background-color: #000000;
+}
+
+#root {
+    display: flex;
     background-color: #000000;
 }
