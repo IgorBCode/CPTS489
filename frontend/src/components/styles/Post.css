@@ -1,0 +1,87 @@
+.post {    
+    color: white;
+    background: linear-gradient(black, black) padding-box,
+    linear-gradient(to right, #8d00e9, #ff2aee) border-box;
+    border-radius: 10px;
+    border: 1px solid transparent;
+    width: 100%;
+    margin: 10px;
+}
+
+.post-content {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.vote-count {
+    margin: 10px;
+}
+
+.like-container {
+    display: flex;
+    border-radius: 10px;
+    border: 2px solid #8d00e9;
+    align-items: center;
+}
+
+.dislike-container {
+    display: flex;
+    border-radius: 10px;
+    border: 2px solid #ff2aee;
+    align-items: center;
+    margin-top: 5px;
+}
+
+/* container for both like buttons */
+.like-buttons {
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+}
+
+/* controls appearance of single like button */
+.like-button {
+    background: transparent;
+    border: none;
+    fill: black;
+    width: 40px;
+    height: 40px;
+}
+
+.post-info {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    padding: 10px;
+    line-height: 2rem;
+}
+
+.post-info a {
+    font-size: 1.5rem;
+    color: #ff2aee;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.post-info a:hover {
+    text-decoration: underline;
+}
+
+.board-info {
+    align-self: first baseline;
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    padding: 10px;
+    line-height: 2rem;
+}
+
+.board-info a {
+    color: white;
+    text-decoration: none;
+}
+
+.board-info a:hover {
+    text-decoration: underline;
+}

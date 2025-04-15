@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
+const path = require('path');
 const { checkBattles } = require('./jobs/battleChecker');
 
 dotenv.config();
@@ -19,7 +20,7 @@ app.use(cors({
 
 // static html files for testing
 // remove this to see raw json data
-// app.use(express.static('public'));
+app.use(express.static(path.join(__dirname, '../frontend/dist')));
 
 // authentication routes
 const authRoutes = require('./routes/auth');
@@ -55,6 +56,10 @@ checkBattles();
 mongoose.connect(process.env.MONGO_URI)
     .then(() => console.log('MongoDB connected'))
     .catch((err) => console.error('MongoDB connection error.', err));
+
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, '../frontend/dist/index.html'))
+})
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
