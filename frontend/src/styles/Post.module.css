@@ -68,6 +68,10 @@
     text-decoration: underline;
 }
 
+.post-info p {
+    margin-bottom: 0;
+}
+
 .board-info {
     align-self: first baseline;
     display: flex;

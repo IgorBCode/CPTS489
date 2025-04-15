@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { NavLink } from 'react-router';
-import * as Icons from './images/sidebar-icons';
+import * as Icons from './sidebar-icons';
 import styles from '../styles/Sidebar.module.css'
-import logo from './images/logo.png'
+import logo from '../assets/logo.png'
 
 export function Logo() {
     return (
@@ -68,25 +68,15 @@ function JoinedBoards() {
 }
 
 function Login({ icon }) {
-    const [menuVisible, setMenuVisible] = useState(false)
-
-    const toggleMenu = () => {
-        setMenuVisible(!menuVisible)
-    }
-
     return (
-        <div className={styles["login"]} onClick={toggleMenu}>
+        <div className={`dropup ${styles["login"]}`}>
             <div className={styles["login-icon"]}>{icon}</div>
-            <div>Sign In/Sign Up</div>
-            {menuVisible && (
-                <div className={styles["login-menu"]}>
-                    <ul>
-                        <li><NavLink to="login">Sign In</NavLink></li>
-                        <li><NavLink to="register">Sign Up</NavLink></li>
-                        <li><NavLink to="">Sign Out</NavLink></li>
-                    </ul>
-                </div>
-            )}
+            <div className={styles["dropdown-toggle"]} data-bs-toggle="dropdown" >Sign In/Sign Up</div>
+                <ul className={`dropdown-menu ${styles["login-menu"]}`}>
+                    <li><NavLink to="login" className={styles["dropdown-item"]}>Sign In</NavLink></li>
+                    <li><NavLink to="register" className={styles["dropdown-item"]}>Sign Up</NavLink></li>
+                    <li><NavLink to="" className={styles["dropdown-item"]}>Sign Out</NavLink></li>
+                </ul>
         </div>
     )
 }

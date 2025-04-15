@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import styles from '../styles/Post.module.css'
-import * as Icons from './images/post-icons'
+import * as Icons from './post-icons'
 
 // For showing when the post was created on the Card
 function getTimeDifference(date) {

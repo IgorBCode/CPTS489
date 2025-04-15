@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import fightSvg from "../assets/fight.svg";
+import logo from '../assets/logo.png'
+import styles from '../styles/UserAuthForm.module.css'
 
 export default function Login() {
     const [username, setUsername] = useState("");
@@ -7,15 +8,10 @@ export default function Login() {
 
     return (
         <div className="container d-flex align-items-center justify-content-center vh-100">
-            <div className="col-md-6">
-                <div className="card p-4 shadow">
+            <div className={`col-md-6`}>
+                <div className={`card p-4 ${styles["login-style"]}`}>
                     <div className="d-flex flex-column align-items-center">
-                        <h2>Board Battles</h2>
-                        <img
-                            src={fightSvg}
-                            className="img-fluid mb-2"
-                            style={{ maxWidth: 100, height: "auto" }}
-                        />
+                        <img className={styles["login-logo"]} src={logo}></img>
                         <h3 className="mb-3">Login</h3>
                     </div>
                     <form action="/api/auth/login" method="POST">
@@ -47,9 +43,9 @@ export default function Login() {
                         </div>
                         <button
                             type="submit"
-                            className="btn btn-primary w-100"
+                            className={`btn w-100 ${styles["login-button"]}`}
                         >
-                            Login
+                            <strong>Login</strong>
                         </button>
                     </form>
                 </div>
