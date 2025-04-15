@@ -23,6 +23,7 @@ export default function Login() {
             if (response.ok) {
                 const data = await response.json();
                 console.log(data); // Handle login success (e.g., store token, redirect)
+                window.location.href = "/";
             } else {
                 const error = await response.json();
                 alert(error.error || "Login failed");

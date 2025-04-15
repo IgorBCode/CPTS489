@@ -1,8 +1,9 @@
-import { useState } from 'react';
-import { NavLink, Outlet } from 'react-router';
+import { useState, useContext } from 'react';
+import { Navigate, NavLink, Outlet} from 'react-router';
 import * as Icons from './sidebar-icons';
 import styles from '../styles/Sidebar.module.css'
 import logo from '../assets/logo.png'
+import { UserContext } from '../context/UserContext'
 
 export function Logo() {
     return (
@@ -59,14 +60,21 @@ export default function Sidebar() {
 }
 
 function JoinedBoards() {
+    
+    const { user } = useContext(UserContext)
+    
     return (
         <div className={styles["my-boards"]}>
             <h1>Your Boards</h1>
-            <ul>
-                <NavLink to="/boards/"><li>Board 1</li></NavLink>
-                <NavLink to="/boards/"><li>Board 2</li></NavLink>
-                <NavLink to="/boards/"><li>Board 3</li></NavLink>
-            </ul>
+            {!user ? (
+                <p>Sign in to see your Boards</p>
+            ) : (
+                <ul>
+                    <NavLink to="/boards/"><li>Board 1</li></NavLink>
+                    <NavLink to="/boards/"><li>Board 2</li></NavLink>
+                    <NavLink to="/boards/"><li>Board 3</li></NavLink>
+                </ul>
+            )}
         </div>
     )
 }
@@ -81,6 +89,7 @@ function Login({ icon }) {
 
             if (response.ok) {
                 alert("You have been logged out successfully!");
+                window.location.reload()
             } else {
                 alert("Failed to log out. Please try again.");
             }
