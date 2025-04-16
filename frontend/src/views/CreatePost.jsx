@@ -1,8 +1,126 @@
 import styles from '../styles/CreatePost.module.css';
+import { useState, useContext } from 'react';
+import { Form, Navigate, useNavigate } from 'react-router'
+import { UserContext } from '../context/UserContext';
 
 export default function CreatePost() {
+    const { user, boards } = useContext(UserContext)
+    const [title, setTitle] = useState("")
+    const [body, setBody] = useState("")
+    const [image, setImage] = useState(null)
+    const [board, setBoard] = useState("")
+    const navigate = useNavigate();
+
+    const submitPost = async (e) => {
+        e.preventDefault();
+
+        const formData = new FormData();
+        formData.append("title", title);
+        formData.append("content", body);
+        formData.append("boardId", board);
+        // if (image) {
+        //     formData.append("image", image);
+        // }
+        // images are just for show
+
+        try {
+            const response = await fetch(`/api/posts`, {
+                method: 'POST',
+                credentials: 'include',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ title: title, content: body, boardId: board._id}),
+            })
+
+            if (response.ok) {
+                console.log("Post created")
+                navigate("/")
+            } else {
+                alert('Failed to create post')
+            }
+        } catch (err) {
+            console.error("Error creating post:", err);
+        }
+
+    }
+
+
     return (
-        <>
+        <div className={`container d-flex align-items-center justify-items-center`}>
+            <div className={styles["post-form-container"]}>
+                <div className={styles["post-form-header"]}>
+                    <h>Create Post</h>
+                    <label htmlFor="board" className={`form-label`}>
+                        Board
+                    </label>
+                    <select
+                        className={`form-select mb-3 selectpicker`}
+                        data-live-search="true"
+                        id="board"
+                        form="post-form"
+                        value={board}
+                        onChange={(e) => setBoard(e.target.value)}
+                        required
+                    >
+                        <option value="" disabled>
+                            -- Select a Board --
+                        </option>
+                        {boards.map((board) => (
+                            <option 
+                                key={board._id} 
+                                value={board._id} 
+                                data-tokens={board.name}
+                            >
+                                {board.name}
+                            </option>
+                        ))}
+                    </select>
+                </div>
+                <Form id="post-form" className={styles["post-form"]} onSubmit={submitPost}>
+                    <label htmlFor="title" className={`mt-1 mb-1 form-label`}>
+                        Post Title
+                    </label>
+                    <input
+                        type="text"
+                        className={`form-control`}
+                        id="title"
+                        value={title}
+                        onChange={(e) => setTitle(e.target.value)}
+                        required
+                    />
+                    <label htmlFor="body" className={`mt-1 mb-1 form-label`}>
+                        Body Text
+                    </label>
+                    <input
+                        type="text"
+                        className={`form-control ${styles["body-text"]}`}
+                        id="body"
+                        value={body}
+                        onChange={(e) => setBody(e.target.value)}
+                        required
+                    />
+                    <label htmlFor="image" className={`mt-1 mb-1 form-label`}>
+                        Image
+                    </label>
+                    <input
+                        type="file"
+                        className={`form-control`}
+                        id="image"
+                        value={image}
+                        onChange={(e) => setImage(e.target.value)}
+                        accept="image/png, image/jpeg"
+                    />
+                    <button className={`w-100 btn btn-lg mt-3 ${styles["post-form-button"]}`} type="submit">
+                        Post
+                    </button>
+                </Form>
+            </div>
+        </div>
+    )
+}
+
+{/* <>
             <h3>Create Post</h3>
             <div className="button-row d-flex justify-content-between align-items-end">
                 <div className="dropdown mt-2">
@@ -73,6 +191,4 @@ export default function CreatePost() {
             >
                 Post
             </button>
-        </>
-    );
-}
+        </> */}

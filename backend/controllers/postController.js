@@ -3,7 +3,7 @@ const Board = require('../models/Board');
 
 exports.createPost = async (req, res) => {
     try {
-        const { title, content, boardId } = req.body;
+        const { title, content, boardId, userId } = req.body;
 
         const board = await Board.findById(boardId);
         if (!board) {
@@ -14,7 +14,7 @@ exports.createPost = async (req, res) => {
             title,
             content,
             board: boardId,
-            author: req.user.id
+            author: userId // req.user.id
         });
 
         await newPost.save();

@@ -24,7 +24,7 @@ export default function Profile() {
 
 function ProfileSettings() {
 
-    const { user, setUser } = useContext(UserContext); // Assuming `setUser` is exposed in UserContext
+    const { user, setUser } = useContext(UserContext);
     const [username, setUsername] = useState(user?.username || "");
     const [email, setEmail] = useState(user?.email || "");
     const [currentPassword, setCurrentPassword] = useState("");

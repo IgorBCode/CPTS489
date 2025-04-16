@@ -52,10 +52,13 @@ export default function Board() {
         <div className="content-container flex-fill">
             <h1 className="text-center">Welcome to BoardName!</h1>
             <NavLink
-                className="btn btn-primary position-absolute top-0 end-0 m-3 board-battles-gradient-text"
+                className="btn btn-primary position-absolute top-0 start-2 m-3 board-battles-gradient-text"
                 to="battle"
             >
                 Start Board Battle
+            </NavLink>
+            <NavLink to="create" className="btn  btn-primary position-absolute top-0.75 start-2 m-3 board-battles-gradient-text">
+                Create Post
             </NavLink>
             {/* Trophy case */}
             <div className="p-3 rounded mini-trophy-case">
