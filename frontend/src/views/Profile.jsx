@@ -186,7 +186,13 @@ function TrophyCase() {
             <div className={styles["trophies"]}>
                 {user?.awards && user?.awards.length > 0 ? (
                     user.awards.map((award, index) => (
-                        <img/> // todo: determine which image displays based on user awards
+                        <img
+                            key={index}
+                            src={award}
+                            alt={`Award ${index}`}
+                            width={75}
+                            height="auto"
+                        />
                     ))
                 ) : (
                     <p>No awards yet.</p>
