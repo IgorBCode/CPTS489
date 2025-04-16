@@ -1,4 +1,4 @@
-import { createContext, useState, useEffect, useRef } from 'react';
+import { createContext, useState, useEffect } from 'react';
 
 export const UserContext = createContext();
 
@@ -9,6 +9,10 @@ export const getUser = async () => {
             credentials: 'include',
         });
         const token = await tokenData.json();
+
+        if (!token.user) {
+            return null;
+        }
 
         const userData = await fetch(`/api/users/${token.user.id}`, {
             method: 'GET',
@@ -47,26 +51,33 @@ export const UserProvider = ({ children }) => {
     const [boards, setBoards] = useState([]);
 
     useEffect(() => {
-        if (!isLoading.current) return;
-
         const fetchData = async () => {
-            const userData = await getUser();
-            const boardsData = await getBoards();
+            try {
+                const userData = await getUser();
+                const boardsData = await getBoards();
 
-            setUser(userData);
-            setBoards(boardsData);
+                setUser(userData);
+                setBoards(boardsData);
+            } catch (error) {
+                console.error('Error fetching initial data:', error);
+            } finally {
+                setIsLoading(false);
+            }
         };
 
         fetchData();
-        isLoading.current = false;
     }, []);
 
     const updateUser = async () => {
-        setUser(await getUser());
+        const userData = await getUser();
+        setUser(userData);
+        return userData;
     };
 
     const updateBoards = async () => {
-        setBoards(await getBoards());
+        const boardsData = await getBoards();
+        setBoards(boardsData);
+        return boardsData;
     };
 
     const refreshData = async () => {
@@ -74,10 +85,13 @@ export const UserProvider = ({ children }) => {
         const boardsData = await getBoards();
         setUser(userData);
         setBoards(boardsData);
+        return { user: userData, boards: boardsData };
     };
 
     return (
-        <UserContext.Provider value={{ user, boards, updateUser, updateBoards, refreshData }}>
+        <UserContext.Provider
+            value={{ user, boards, isLoading, updateUser, updateBoards, refreshData }}
+        >
             {children}
         </UserContext.Provider>
     );

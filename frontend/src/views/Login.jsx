@@ -20,13 +20,18 @@ export default function Login() {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({ username, password }),
+                credentials: 'include',
             });
             const data = await response.json();
 
             if (response.ok) {
-                console.log(data);
-                updateUser(await getUser());
-                navigate('/');
+                console.log('Login successful:', data);
+                const userData = await updateUser();
+                if (userData) {
+                    navigate('/');
+                } else {
+                    alert('Failed to retrieve user data after login');
+                }
             } else {
                 alert(data.error || 'Login failed');
             }
@@ -41,7 +46,7 @@ export default function Login() {
             <div className={`col-md-6`}>
                 <div className={`card p-4 ${styles['login-style']}`}>
                     <div className="d-flex flex-column align-items-center">
-                        <img className={styles['login-logo']} src={logo}></img>
+                        <img className={styles['login-logo']} src={logo} alt="Logo" />
                         <h3 className="mb-3">Login</h3>
                     </div>
                     <Form onSubmit={handleSubmit}>

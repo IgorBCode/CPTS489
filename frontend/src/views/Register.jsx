@@ -1,8 +1,8 @@
 import React, { useContext, useState } from 'react';
-import { Form, redirect, useNavigate } from 'react-router';
+import { Form, useNavigate } from 'react-router';
 import logo from '../assets/logo.png';
 import styles from '../styles/UserAuthForm.module.css';
-import { getUser, UserContext } from '../context/UserContext';
+import { UserContext } from '../context/UserContext';
 
 export default function Register() {
     const [username, setUsername] = useState('');
@@ -21,15 +21,35 @@ export default function Register() {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({ username, email, password }),
+                credentials: 'include',
             });
             const data = await response.json();
 
             if (response.ok) {
-                console.log(data);
-                updateUser(await getUser());
-                navigate('/');
+                console.log('Registration successful:', data);
+                
+                const loginResponse = await fetch('/api/auth/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ username, password }),
+                    credentials: 'include',
+                });
+                
+                if (loginResponse.ok) {
+                    const userData = await updateUser();
+                    if (userData) {
+                        navigate('/');
+                    } else {
+                        alert('Failed to retrieve user data after registration');
+                    }
+                } else {
+                    alert('Registration successful but login failed. Please log in manually.');
+                    navigate('/login');
+                }
             } else {
-                alert(data.error || 'Login failed');
+                alert(data.error || 'Registration failed');
             }
         } catch (error) {
             console.error('Error registering:', error);
@@ -42,17 +62,10 @@ export default function Register() {
             <div className="col-md-6">
                 <div className={`card p-4 ${styles['login-style']}`}>
                     <div className="d-flex flex-column align-items-center">
-                        <img className={styles['login-logo']} src={logo}></img>
+                        <img className={styles['login-logo']} src={logo} alt="Logo" />
                         <h3 className="mb-3">Register</h3>
                     </div>
-                    <Form
-                        action="/"
-                        method="POST"
-                        onSubmit={e => {
-                            handleRegister(e);
-                            navigate('/');
-                        }}
-                    >
+                    <Form onSubmit={handleRegister}>
                         <div className="mb-3">
                             <label htmlFor="username" className="form-label">
                                 Username
