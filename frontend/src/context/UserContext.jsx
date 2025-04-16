@@ -4,19 +4,19 @@ export const UserContext = createContext()
 
 export const getUser = async () => {
     try {
-        const meData = await fetch('/api/auth/me', {
+        const tokenData = await fetch('/api/auth/me', {
             method: 'GET',
             credentials: 'include'
         })
-        const me = await meData.json()
+        const token = await tokenData.json()
 
-        const userData = await fetch(`/api/users/${me.user.id}`, {
+        const userData = await fetch(`/api/users/${token.user.id}`, {
             method: 'GET',
             credentials: 'include'
         });
         const user = await userData.json()
 
-        console.log(me.message)
+        console.log(token.message)
 
         return user
     } catch (err) {
@@ -55,10 +55,10 @@ export const UserProvider = ({ children }) => {
 
             setUser(userData);
             setBoards(boardsData);
-            isLoading.current = false;
         }
 
         fetchData();
+        isLoading.current = false;
     }, [])
 
     return (
