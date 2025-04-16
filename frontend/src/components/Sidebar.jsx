@@ -101,16 +101,21 @@ function Login({ icon }) {
         }
     };
 
-    console.log(user);
-
     return (
         <div className={`dropup ${styles["login"]}`}>
             <div className={styles["login-icon"]}>{icon}</div>
-            <div className={styles["dropdown-toggle"]} data-bs-toggle="dropdown">Sign In/Sign Up</div>
+            <div className={styles["dropdown-toggle"]} data-bs-toggle="dropdown">{!user ? (<>Sign In/Sign Up</>) : (<>{user.username}</>)}</div>
             <ul className={`dropdown-menu ${styles["login-menu"]}`}>
-                <li><NavLink to="login" className={styles["dropdown-item"]}>Sign In</NavLink></li>
-                <li><NavLink to="register" className={styles["dropdown-item"]}>Sign Up</NavLink></li>
-                <li><NavLink to="/" onClick={handleLogout} className={styles["dropdown-item"]}>Sign Out</NavLink></li>
+                {!user ? (
+                    <>    
+                        <li><NavLink to="login" className={styles["dropdown-item"]}>Sign In</NavLink></li>
+                        <li><NavLink to="register" className={styles["dropdown-item"]}>Sign Up</NavLink></li>
+                    </>
+                ) : (
+                    <>
+                        <li><NavLink to="/" onClick={handleLogout} className={styles["dropdown-item"]}>Sign Out</NavLink></li>
+                    </>
+                )}
             </ul>
         </div>
     )

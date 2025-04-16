@@ -15,11 +15,14 @@ export const UserProvider = ({ children }) => {
             })
 
             if (response.ok) {
-                const data = await response.json()
-                setUser(data.user)
-                console.log("User Context Created")
+                const token = await response.json()
+                const response2 = await fetch(`/api/users/${token.user.id}`, {
+                    method: 'GET'
+                })
+                
+                setUser(await response2.json())
             } else {
-                console.log("Couldn't setUser")
+                console.log("Not logged in")
                 setUser(null)
             }
         } catch (err) {
@@ -36,7 +39,7 @@ export const UserProvider = ({ children }) => {
             const data = await response.json()
             setBoards(data.boards)
             
-            console.log("Fetched boards successfully")
+            console.log("Fetched boards successfully" + data.boards)
         } catch (err) {
             console.log("Couldn't fetch boards")
         }
