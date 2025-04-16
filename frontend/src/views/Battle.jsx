@@ -1,13 +1,13 @@
 export default function Battle() {
     return (
-        <div className="content-container">
+        <div className="content-container flex-fill">
             <h3 className="text-center mb-4">Active Battles</h3>
             <hr />
             {/* battles */}
             <div className="row justify-content-center">
                 <div className="col-md-6">
                     <div className="card text-center">
-                        <div className="card-header bg-primary text-white">
+                        <div className="card-header text-white board-battles-gradient-text">
                             <h2>Food VS Art</h2>
                         </div>
                         <div className="card-body">
@@ -27,7 +27,7 @@ export default function Battle() {
             <div className="row justify-content-center my-4">
                 <div className="col-md-6">
                     <div className="card text-center">
-                        <div className="card-header bg-primary text-white">
+                        <div className="card-header text-white board-battles-gradient-text">
                             <h2>Cars VS Gaming</h2>
                         </div>
                         <div className="card-body">

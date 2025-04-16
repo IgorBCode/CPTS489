@@ -1,27 +1,25 @@
-import React, { useContext, useState, useEffect } from 'react';
-import { Form, NavLink, useParams } from 'react-router';
-import { getUser, UserContext } from '../context/UserContext';
+import React, { useContext, useState, useEffect, useRef } from 'react';
+import { Form, NavLink, redirect, useParams, useSubmit } from 'react-router';
+import { UserContext } from '../context/UserContext';
 
-export async function startBattleAction({ request, params}) {
-    console.log({request, params});
+export async function startBattleAction({ request, params }) {
     const formData = await request.formData();
-    const boardToBattle = formData.get('boardToBattle');
-    const user = getUser();
+    const boardA = params.boardId;
+    const boardB = formData.get('boardToBattleId');
 
     const response = await fetch('/api/battles/start', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ board, boardToBattle }),
-        user: user,
+        body: JSON.stringify({ boardA, boardB }),
         credentials: 'include',
     });
     const battleData = await response.json();
 
     if (response.ok) {
         console.log('Battle started successfully:', battleData);
-        // navigate(`/battles/${battleData._id}`);
+        return redirect(`/battles/${battleData.battle._id}`);
     } else {
         console.error('Error starting battle:', battleData.error);
     }
@@ -36,6 +34,9 @@ export default function StartBattle() {
     const [showDropdown, setShowDropdown] = useState(false);
     const params = useParams();
     const currentBoardId = params.boardId;
+    const [boardToBattleId, setBoardToBattleId] = useState('');
+    const formRef = useRef(null);
+    const submit = useSubmit();
 
     useEffect(() => {
         if (boardToBattle.trim() === '') {
@@ -51,14 +52,38 @@ export default function StartBattle() {
         setFilteredBoards(filtered);
     }, [boardToBattle, boards, currentBoardId]);
 
-    const handleSelectBoard = boardName => {
-        setBoardToBattle(boardName);
+    const handleSelectBoard = board => {
+        setBoardToBattle(board.name);
+        setBoardToBattleId(board._id);
         setShowDropdown(false);
     };
 
     const handleInputFocus = () => {
         if (boardToBattle.trim() !== '') {
             setShowDropdown(true);
+        }
+    };
+
+    const handleInputChange = e => {
+        setBoardToBattle(e.target.value);
+        setShowDropdown(true);
+    };
+    
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        
+        const matchingBoard = boards.find(
+            board => 
+                board._id !== currentBoardId && 
+                board.name.toLowerCase() === boardToBattle.toLowerCase()
+        );
+        
+        if (matchingBoard) {
+            const formData = new FormData(e.target);
+            formData.set('boardToBattleId', matchingBoard._id);
+            submit(formData, { method: "post" });
+        } else {
+            alert("Please select a valid board from the list");
         }
     };
 
@@ -69,24 +94,28 @@ export default function StartBattle() {
                     <NavLink to="/battles">Back</NavLink>
                 </nav>
                 <h1>Start a Battle Between Boards</h1>
-                <Form method="POST" id="battle-form" className="d-flex flex-column gap-3">
+                <Form 
+                    ref={formRef}
+                    method="POST" 
+                    id="battle-form" 
+                    className="d-flex flex-column gap-3" 
+                    onSubmit={handleSubmit}
+                >
                     <fieldset className="form-group position-relative">
                         <label htmlFor="board">Board to battle:</label>
                         <input
                             type="text"
                             className={`form-control`}
                             id="board"
-                            name="board"
+                            name="boardToBattle"
                             value={boardToBattle}
                             placeholder="Enter board name"
-                            onChange={e => {
-                                setBoardToBattle(e.target.value);
-                                setShowDropdown(true);
-                            }}
+                            onChange={handleInputChange}
                             onFocus={handleInputFocus}
                             autoComplete="off"
                             required
                         />
+                        <input type="hidden" name="boardToBattleId" value={boardToBattleId} />
                         {showDropdown && filteredBoards.length > 0 && (
                             <div className="board-dropdown position-absolute w-100 mt-1 border rounded bg-dark shadow-sm">
                                 {filteredBoards.map(board => (
@@ -94,7 +123,7 @@ export default function StartBattle() {
                                         key={board._id}
                                         className="p-2 border-bottom"
                                         style={{ cursor: 'pointer' }}
-                                        onClick={() => handleSelectBoard(board.name)}
+                                        onClick={() => handleSelectBoard(board)}
                                     >
                                         {board.name}
                                     </div>

@@ -1,4 +1,4 @@
-import { createContext, useState, useEffect } from 'react';
+import { createContext, useState, useEffect, useRef } from 'react';
 
 export const UserContext = createContext();
 
@@ -8,9 +8,18 @@ export const getUser = async () => {
             method: 'GET',
             credentials: 'include',
         });
+        
+        if (!tokenData.ok) {
+            if (tokenData.status === 401) {
+                return null;
+            }
+            throw new Error(`Server responded with ${tokenData.status}`);
+        }
+        
         const token = await tokenData.json();
 
         if (!token.user) {
+            console.log("Not logged in");
             return null;
         }
 
@@ -18,13 +27,18 @@ export const getUser = async () => {
             method: 'GET',
             credentials: 'include',
         });
+        
+        if (!userData.ok) {
+            throw new Error(`Failed to get user data: ${userData.status}`);
+        }
+        
         const user = await userData.json();
 
         console.log(token.message);
 
         return user;
     } catch (err) {
-        console.log("Couldn't get user");
+        console.error("Error getting user:", err);
         return null;
     }
 };
@@ -49,8 +63,11 @@ export const UserProvider = ({ children }) => {
     const [isLoading, setIsLoading] = useState(true);
     const [user, setUser] = useState(null);
     const [boards, setBoards] = useState([]);
+    const initialFetchDone = useRef(false);
 
     useEffect(() => {
+        if (initialFetchDone.current) return;
+        
         const fetchData = async () => {
             try {
                 const userData = await getUser();
@@ -58,14 +75,14 @@ export const UserProvider = ({ children }) => {
 
                 setUser(userData);
                 setBoards(boardsData);
+                setIsLoading(false);
             } catch (error) {
                 console.error('Error fetching initial data:', error);
-            } finally {
-                setIsLoading(false);
             }
         };
 
         fetchData();
+        initialFetchDone.current = true;
     }, []);
 
     const updateUser = async () => {
