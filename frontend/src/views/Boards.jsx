@@ -5,52 +5,69 @@ import styles from '../styles/Boards.module.css';
 import SearchBar from '../components/SearchBar.jsx';
 
 export default function Boards() {
-    const { boards } = useContext(UserContext);
     const [searchTerm, setSearchTerm] = useState('');
     const [filteredBoards, setFilteredBoards] = useState([]);
+    const [boards, setBoards] = useState([]);
+
+    // fetches boards after being redirected here to display newly created board
+    useEffect(() => {
+        const fetchBoards = async () => {
+            try {
+                const res = await fetch('/api/boards', {
+                    credentials: 'include',
+                });
+                const data = await res.json();
+                setBoards(data);
+            } catch (err) {
+                console.error('Failed to fetch boards', err);
+            }
+        };
+
+        fetchBoards();
+    }, []);
 
     // Static board data (kept separate from dynamic boards)
-    const STUBBED_BOARDS = [
-        {
-            _id: 'cars',
-            name: '🚗 Cars',
-            description: 'Share your car pics, mod/fix tips, and talk about anything car related.',
-        },
-        {
-            _id: 'food',
-            name: '🍔 Food',
-            description:
-                'Share recipes, restaurant recommendations, and anything else food related.',
-        },
-        {
-            _id: 'webdev',
-            name: '💻 WebDev',
-            description: 'A place where you can learn how to center a div.',
-        },
-        {
-            _id: 'pets',
-            name: '🐶 Pets',
-            description: 'Join other pet owner to discuss anything related to our furry friends.',
-        },
-        {
-            _id: 'gaming',
-            name: '🎮 Gaming',
-            description: 'All things video game related.',
-        },
-        {
-            _id: 'art',
-            name: '🎨 Art',
-            description: 'Join a community of artists sharing, exploring, and appreciating art.',
-        },
-        {
-            _id: 'movies',
-            name: '🎥 Movies',
-            description: 'Join the discussion about all things movie related',
-        },
-    ];
+    // const STUBBED_BOARDS = [
+    //     {
+    //         _id: 'cars',
+    //         name: '🚗 Cars',
+    //         description: 'Share your car pics, mod/fix tips, and talk about anything car related.',
+    //     },
+    //     {
+    //         _id: 'food',
+    //         name: '🍔 Food',
+    //         description:
+    //             'Share recipes, restaurant recommendations, and anything else food related.',
+    //     },
+    //     {
+    //         _id: 'webdev',
+    //         name: '💻 WebDev',
+    //         description: 'A place where you can learn how to center a div.',
+    //     },
+    //     {
+    //         _id: 'pets',
+    //         name: '🐶 Pets',
+    //         description: 'Join other pet owner to discuss anything related to our furry friends.',
+    //     },
+    //     {
+    //         _id: 'gaming',
+    //         name: '🎮 Gaming',
+    //         description: 'All things video game related.',
+    //     },
+    //     {
+    //         _id: 'art',
+    //         name: '🎨 Art',
+    //         description: 'Join a community of artists sharing, exploring, and appreciating art.',
+    //     },
+    //     {
+    //         _id: 'movies',
+    //         name: '🎥 Movies',
+    //         description: 'Join the discussion about all things movie related',
+    //     },
+    // ];
 
     useEffect(() => {
-        const allBoards = [...boards, ...STUBBED_BOARDS];
+        const allBoards = [...boards];
 
         if (searchTerm.trim() === '') {
             setFilteredBoards(allBoards);
