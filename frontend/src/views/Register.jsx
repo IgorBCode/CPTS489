@@ -12,20 +12,25 @@ export default function Register() {
     const handleRegister = async (e) => {
         e.preventDefault();
 
-        const response = await fetch("/api/auth/register", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ username, email, password }),
-        });
-
-        if (response.ok) {
+        try {
+            const response = await fetch("/api/auth/register", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ username, email, password }),
+            });
             const data = await response.json();
-            console.log(data);
-        } else {
-            const error = await response.json();
-            alert(error.error || "Login failed");
+
+            if (response.ok) {
+                console.log(data);
+                navigate("/");
+            } else {
+                alert(data.error || "Login failed");
+            }
+        } catch (error) {
+            console.error("Error registering:", error);
+            alert("An error occurred. Please try again.");
         }
     };
 
@@ -37,7 +42,7 @@ export default function Register() {
                         <img className={styles["login-logo"]} src={logo}></img>
                         <h3 className="mb-3">Register</h3>
                     </div>
-                    <Form action="/" method="POST" onSubmit={(e) => {handleRegister(e); navigate("/")}}>
+                    <Form action="/" method="POST" onSubmit={(e) => { handleRegister(e); navigate("/") }}>
                         <div className="mb-3">
                             <label htmlFor="username" className="form-label">
                                 Username

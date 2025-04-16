@@ -9,7 +9,7 @@ export default function Login() {
     const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
-        e.preventDefault(); // Prevent default form submission
+        e.preventDefault();
 
         try {
             const response = await fetch("/api/auth/login", {
@@ -19,14 +19,13 @@ export default function Login() {
                 },
                 body: JSON.stringify({ username, password }),
             });
+            const data = await response.json();
 
             if (response.ok) {
-                const data = await response.json();
-                console.log(data); // Handle login success (e.g., store token, redirect)
-                window.location.href = "/";
+                console.log(data);
+                navigate("/");
             } else {
-                const error = await response.json();
-                alert(error.error || "Login failed");
+                alert(data.error || "Login failed");
             }
         } catch (err) {
             console.error("Error logging in:", err);
@@ -42,7 +41,7 @@ export default function Login() {
                         <img className={styles["login-logo"]} src={logo}></img>
                         <h3 className="mb-3">Login</h3>
                     </div>
-                    <Form onSubmit={(e) => {handleSubmit(e); navigate("/")}} >
+                    <Form onSubmit={handleSubmit} >
                         <div className="mb-3">
                             <label htmlFor="username" className="form-label">
                                 Username
