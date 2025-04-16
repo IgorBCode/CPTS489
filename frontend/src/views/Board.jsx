@@ -50,7 +50,7 @@ export default function Board() {
 
     return (
         <div className="content-container flex-fill">
-            <h1 className="text-center">Welcome to BoardName!</h1>
+            <h1 className="text-center">Welcome to {board.name}!</h1>
             <NavLink
                 className="btn btn-primary position-absolute top-0 start-2 m-3 board-battles-gradient-text"
                 to="battle"
