@@ -3,9 +3,8 @@ const bcrypt = require('bcrypt');
 
 exports.getUserById = async (req, res) => {
     try {
-        // get username and awards
-        const user = await User.findById(req.params.id, 'username awards');
-        res.json(user);
+        const user = await User.findById(req.params.id, 'username awards email subscriptions');
+        res.json(user)
     } catch (err) {
         res.status(500).json({ error: 'User not found' });
     }

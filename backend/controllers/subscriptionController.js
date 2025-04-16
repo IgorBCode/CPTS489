@@ -22,7 +22,7 @@ exports.subscribeToBoard = async (req, res) => {
         }
 
         // check sub limit
-        if (user.subscriptions.lenght >= 3) {
+        if (user.subscriptions.length >= 3) {
             return res.status(400).json({ error: 'Subbed to max amount of boards (3)' });
         }
 
