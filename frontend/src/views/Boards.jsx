@@ -1,16 +1,21 @@
+import { useContext } from "react";
 import { Form, NavLink } from "react-router";
+import { UserContext } from "../context/UserContext";
+import styles from "../styles/Boards.module.css";
 
 export default function Boards() {
+    const { boards } = useContext(UserContext);
+
     return (
         <>
-            <div className="content-container">
+            <div className={styles["content-container"]}>
             <h1 className="text-center">Explore Communities</h1>
                 {/* list of boards */}
-                <div className="row">
+                <div className={`row ${styles["row"]}`}>
                     <div className="row align-items-start">
                         <div className="row align-items-start">
                             <div className="col">
-                                <NavLink to="create" className="btn btn-success btn-md">
+                                <NavLink to="create" className="btn board-battles-gradient-text">
                                     Create Board
                                 </NavLink>
                             </div>
@@ -31,6 +36,19 @@ export default function Boards() {
                             </div>
                         </div>
                     </div>
+                    {boards.map((board) => {
+                        return (
+                            <div className={`col-md-4 mt-3`} key={board._id}>
+                                <div className={`card p-3 h-100`}>
+                                    <h5 className="card-title">{board.name}</h5>
+                                    <p className={`text-muted clamp-text flex-wrap flex-fill`}>{board.description}</p>
+                                    <NavLink to={`${board._id}`} className="btn btn-primary">
+                                        Explore
+                                    </NavLink>
+                                </div>
+                            </div>
+                        )
+                    })}
                     <div className="col-md-4 mt-3">
                         <div className="card p-3">
                             <h5 className="card-title">🚗 Cars</h5>

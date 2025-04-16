@@ -1,57 +1,64 @@
-import { createContext, useState, useEffect, useRef} from 'react'
+import { createContext, useState, useEffect, useRef } from 'react'
 
 export const UserContext = createContext()
+
+export const getUser = async () => {
+    try {
+        const meData = await fetch('/api/auth/me', {
+            method: 'GET',
+            credentials: 'include'
+        })
+        const me = await meData.json()
+
+        const userData = await fetch(`/api/users/${me.user.id}`, {
+            method: 'GET',
+            credentials: 'include'
+        });
+        const user = await userData.json()
+
+        console.log(me.message)
+
+        return user
+    } catch (err) {
+        console.log("Couldn't get user")
+        return null
+    }
+}
+
+export const getBoards = async () => {
+    try {
+        const boardsData = await fetch('/api/boards/', {
+            method: 'GET'
+        });
+        const boards = await boardsData.json()
+
+        console.log("Fetched boards successfully")
+
+        return boards
+    } catch (err) {
+        console.log("Couldn't fetch boards")
+        return []
+    }
+}
 
 export const UserProvider = ({ children }) => {
     const isLoading = useRef(true)
     const [user, setUser] = useState(null)
     const [boards, setBoards] = useState([])
 
-    const fetchUserData = async() => {
-        try {
-            const response = await fetch('/api/auth/me', {
-                method: 'GET',
-                credentials: 'include'
-            })
-
-            if (response.ok) {
-                const token = await response.json()
-                const response2 = await fetch(`/api/users/${token.user.id}`, {
-                    method: 'GET'
-                })
-                
-                setUser(await response2.json())
-            } else {
-                console.log("Not logged in")
-                setUser(null)
-            }
-        } catch (err) {
-            setUser(null)
-        }
-    }
-
-    const getBoards = async () => {
-        try {
-            const response = await fetch('/api/boards/', {
-                method: 'GET'
-            });
-
-            const data = await response.json()
-            setBoards(data.boards)
-            
-            console.log("Fetched boards successfully" + data.boards)
-        } catch (err) {
-            console.log("Couldn't fetch boards")
-        }
-    }
-
-    
-
     useEffect(() => {
-        if (!isLoading.current) return
-        fetchUserData()
-        getBoards()
-        isLoading.current = false
+        if (!isLoading.current) return;
+
+        const fetchData = async () => {
+            const userData = await getUser();
+            const boardsData = await getBoards();
+
+            setUser(userData);
+            setBoards(boardsData);
+            isLoading.current = false;
+        }
+
+        fetchData();
     }, [])
 
     return (
@@ -59,8 +66,4 @@ export const UserProvider = ({ children }) => {
             {children}
         </UserContext.Provider>
     )
-    
 }
-
-
-

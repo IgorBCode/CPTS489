@@ -4,6 +4,12 @@
     box-sizing: border-box;
 }
 
+:root {
+    --board-battles-gradient-bg: linear-gradient(black, black) padding-box,
+        linear-gradient(to right, #8d00e9, #ff2aee) border-box;
+    --board-battles-gradient-text: linear-gradient(to right, #8d00e9, #ff2aee);
+}
+
 html {
     background-color: #000000;
 }
@@ -11,4 +17,25 @@ html {
 #root {
     display: flex;
     background-color: #000000;
+}
+
+.board-battles-gradient-bg {
+    background: var(--board-battles-gradient-bg) !important;
+    color: var(--board-battles-gradient-text) !important;
+}
+
+.board-battles-gradient-text {
+    background: var(--board-battles-gradient-text) !important;
+    background-clip: text;
+    -webkit-background-clip: text;
+}
+
+.clamp-text {
+    display: -webkit-box;
+    line-clamp: 3;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    word-break: break-word;
 }
