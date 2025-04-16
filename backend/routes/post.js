@@ -11,7 +11,7 @@ const verifyToken = require('../middleware/authMiddleware');
 router.post('/', verifyToken, createPost);
 router.get('/all', getAllPosts);
 router.post('/:postId/vote', verifyToken, votePost);
-router.get('/:id', verifyToken, getPostById);
+router.get('/:id', getPostById);
 router.get('/board/:boardId', getPostsByBoard);
 
 module.exports = router;
