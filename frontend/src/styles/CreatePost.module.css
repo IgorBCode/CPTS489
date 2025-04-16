@@ -64,10 +64,6 @@
     justify-content: space-between;
 }
 
-.post-form-container label {
-    margin-right: 1rem;
-}
-
 .post-form button {
     color: black;
     background: linear-gradient(to left, #ff2aee, #8d00e9) padding-box,

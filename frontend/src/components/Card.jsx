@@ -39,10 +39,10 @@ function LikeButton({ isClicked, toggleClicked }) {
     )
 }
 
-export default function Card({ postTitle, postUser, postDate, upvotes, downvotes, boardName, commentCount }) {
+export default function Card({ post, board }) {
     const [index, setClicked] = useState(2); // 0 = liked, 1 = disliked, 2 = none
-    const [cur_upvotes, setUpvotes] = useState(upvotes);
-    const [cur_downvotes, setDownvotes] = useState(downvotes);
+    const [cur_upvotes, setUpvotes] = useState(post.upvotes);
+    const [cur_downvotes, setDownvotes] = useState(post.downvotes);
 
     const handleClick = (vote_type) => {
         // if like button clicked
@@ -76,7 +76,7 @@ export default function Card({ postTitle, postUser, postDate, upvotes, downvotes
 
     return (
         <div className={styles.post}>
-            <NavLink style={{ textDecoration: "none", color: "inherit" }}>
+            <div>
                 <div className={styles["post-content"]}>
                     <div className={styles["like-buttons"]}>
                         <div className={styles["like-container"]}>
@@ -95,15 +95,20 @@ export default function Card({ postTitle, postUser, postDate, upvotes, downvotes
                         </div>
                     </div>
                     <div className={styles["post-info"]}>
-                        <h1>{postTitle}</h1>
-                        <p>Posted by {postUser} - {getTimeDifference(postDate)}</p>
-                        <p>{commentCount} Comments</p>
+                        <NavLink  
+                            to={`/boards/${post.board._id}/${post._id}`} 
+                            style={{ textDecoration: "none", color: "inherit" }}
+                        >
+                            <h1>{post.title}</h1>
+                        </NavLink>
+                        <p>Posted by {post.author?.username || 'Unknown'} - {getTimeDifference(new Date(post.createdAt))}</p>
+                        <p>{post.commentCount} Comments</p>
                     </div>
                     <div className={styles["board-info"]}>
-                        <span>Board: {boardName}</span>
+                        <span>Board: {post.board?.name || 'Unknown'}</span>
                     </div>
                 </div>
-            </NavLink>
+            </div>
         </div>
     )
 }
