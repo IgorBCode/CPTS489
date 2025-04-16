@@ -1,4 +1,33 @@
+import React, { useContext } from "react";
+import { useNavigate, useParams } from "react-router";
+import { UserContext } from "../context/UserContext";
+
 export default function Board() {
+    const { user } = useContext(UserContext);
+    const { boardId } = useParams();
+    const navigate = useNavigate();
+
+    const handleJoinBoard = async () => {
+        const response = await fetch("/api/subscriptions/subscribe", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                user: user,
+                boardId: boardId,
+            })
+        })
+        const data = await response.json();
+
+        if (response.ok) {
+            console.log("Subscribed to board.", data);
+            navigate(boardId);
+        } else {
+            console.error("Failed to subscribe to board.", data.error);
+        }
+    }
+
     return (
         <div className="content-container flex-fill">
             <h1 className="text-center">Welcome to BoardName!</h1>
@@ -42,7 +71,7 @@ export default function Board() {
             <div className="container mt-4">
                 <div className="d-flex justify-content-between align-items-center mt-3">
                     <h3 className="mb-0">Posts</h3>
-                    <button type="button" className="btn btn-success btn-md px-4">
+                    <button type="button" className="btn btn-success btn-md px-4" onClick={handleJoinBoard}>
                         Join Board!
                     </button>
                     <div>
