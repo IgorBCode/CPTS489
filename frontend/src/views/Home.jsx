@@ -31,8 +31,13 @@ export default function Home() {
                     posts.map(post => (
                         <Card
                             key={post._id}
-                            post={post}
-                            board={post.board || 'Unknown'}
+                            postTitle={post.title}
+                            postUser={post.author?.username || 'Unknown'}
+                            postDate={new Date(post.createdAt)}
+                            upvotes={post.upvotes}
+                            downvotes={post.downvotes}
+                            boardName={post.board?.name || 'Unknown'}
+                            commentCount={post.commentCount || 0}
                         />
                     ))
                 )}
