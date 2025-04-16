@@ -113,8 +113,11 @@
 }
 
 .login {
+  position: fixed;
+  bottom: 0;
+  left: 0;
   padding-left: 1.5rem;
-  margin-top: 16rem;
+  padding-bottom: 1.5rem;
   color: white;
   display: flex;
   font-weight: 700;
