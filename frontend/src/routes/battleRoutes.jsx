@@ -1,5 +1,5 @@
 // import { Route } from "react-router";
-import Battles from '../views/Battles.jsx';
+import Battles, { getBattlesLoader } from '../views/Battles.jsx';
 import Battle from '../views/Battle.jsx';
 import CreatePost from '../views/CreatePost.jsx';
 import Post from '../views/Post.jsx';
@@ -11,6 +11,8 @@ const BattleRoutes = [
             {
                 index: true,
                 element: <Battles />,
+                loader: getBattlesLoader,
+                HydrateFallback: () => <div className="text-center">Loading...</div>
             },
             {
                 path: ':battleId',
@@ -36,7 +38,6 @@ const BattleRoutes = [
     //     <Route path="start" element={<StartBattle />} />
     //     <Route path=":battleId">
     //         <Route index element={<Battle />} />
-    //         <Route path=":postId" element={<Post />} />
     //         <Route path="create" element={<CreatePost />} />
     //     </Route>
     // </Route>
