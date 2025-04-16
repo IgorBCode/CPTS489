@@ -39,6 +39,7 @@ export default function Home() {
                             upvotes={post.upvotes}
                             downvotes={post.downvotes}
                             boardName={post.board?.name || 'Unknown'}
+                            boardId={post.board._id}
                             commentCount={post.commentCount || 0}
                         />
                     ))

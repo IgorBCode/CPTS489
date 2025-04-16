@@ -1,94 +1,124 @@
-.post {    
+.post-container {
+    display: flex;
+    flex-direction: column;
+    
+    overflow-y: auto;
+    overflow-x: hidden;
+    flex: 1 1 auto;
+
+    position: relative;
+    width: 70vw;
+    height: 90vh;
+    padding-bottom: 2rem;
+    align-items: center;
     color: white;
     background: linear-gradient(black, black) padding-box,
     linear-gradient(to right, #8d00e9, #ff2aee) border-box;
-    border-radius: 10px;
-    border: 1px solid transparent;
-    width: calc(100% - 1rem);
-    margin-left: 0.5rem;
+    border-radius: 4px;
+    border: 2px solid transparent;
+}
+
+.comment-form {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    width: 65vw;
+    margin-top: 2rem;
+}
+
+.comment-form button {
+    color: black;
+    background: linear-gradient(to left, #ff2aee, #8d00e9) padding-box,
+    linear-gradient(to right, #ff2aee, #8d00e9) border-box;
+    border-width: 2px;
+}
+
+.comment-form button:hover {
+    color: white;
+    background: linear-gradient(black, black) padding-box,
+    linear-gradient(to top, #ff2aee, #8d00e9) border-box;
+    border-width: 2px;
 }
 
 .post-content {
+    width: 65vw;
+    height: auto;
+    background: linear-gradient(black, black) padding-box,
+    linear-gradient(to right, #8d00e9, #ff2aee) border-box;
+    border-radius: 2px;
+    border: 2px solid transparent;
+    margin-top: 2rem;
+    padding: 1rem;
+}
+
+.post-header {
     display: flex;
+    justify-content: left;
+    align-items: center;
+    flex-shrink: 0;
+    width: 65vw;
+    height: 15vh;
+    color: white;
     flex-direction: row;
-    align-items: center;
-}
-
-.vote-count {
-    margin: 10px;
-}
-
-.like-container {
-    display: flex;
-    border-radius: 10px;
-    border: 2px solid #8d00e9;
-    align-items: center;
-    cursor: default;
-    z-index: 1;
-}
-
-.dislike-container {
-    display: flex;
-    border-radius: 10px;
-    border: 2px solid #ff2aee;
-    align-items: center;
-    margin-top: 5px;
-    cursor: default;
-}
-
-/* container for both like buttons */
-.like-buttons {
-    display: flex;
-    flex-direction: column;
-    padding: 10px;
-}
-
-/* controls appearance of single like button */
-.like-button {
-    background: transparent;
-    border: none;
-    fill: black;
-    width: 40px;
-    height: 40px;
+    margin-left: 1rem;
+    margin-right: 1rem;
+    border-style: none none solid none;
+    border-width: 2px;
+    border-image: linear-gradient(to right, #8d00e9, #ff2aee) 1;
 }
 
 .post-info {
-    display: flex;
-    flex-direction: column;
-    text-align: left;
-    padding: 10px;
-    line-height: 2rem;
-}
-
-.post-info h1 {
-    font-size: 1.5rem;
-    color: #ff2aee;
-    text-decoration: none;
-    font-weight: bold;
-}
-
-.post-info h1:hover {
-    text-decoration: underline;
-}
-
-.post-info p {
-    margin-bottom: 0;
-}
-
-.board-info {
-    align-self: first baseline;
-    display: flex;
-    flex-direction: column;
-    text-align: left;
-    padding: 10px;
-    line-height: 2rem;
-}
-
-.board-info a {
     color: white;
-    text-decoration: none;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    margin-left: 3rem;
 }
 
-.board-info a:hover {
-    text-decoration: underline;
+.post-header h {
+    font-size: 2rem;
+    vertical-align: top;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.comment-header {
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    width: 65vw;
+    height: 8vh;
+    color: white;
+    flex-direction: row;
+    margin-left: 1rem;
+    margin-right: 1rem;
+    border-style: none none solid none;
+    border-width: 2px;
+    border-image: linear-gradient(to right, #8d00e9, #ff2aee) 1;
+}
+
+.comment-header h {
+    font-size: 2rem;
+    vertical-align: middle;
+}
+
+.comment-container {
+    display: flex;
+    width: 65vw;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    margin-top: 1rem;
+    flex-shrink: 0;
+    overflow-y: auto;
+}
+
+.comment {
+    width: 100%;
+    margin-top: 1rem;
+    border-style: none none solid none;
+    border-width: 1px;
+    border-image: linear-gradient(to right, #8d00e9, #ff2aee) 1;
 }

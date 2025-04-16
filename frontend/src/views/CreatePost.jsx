@@ -14,15 +14,6 @@ export default function CreatePost() {
     const submitPost = async e => {
         e.preventDefault();
 
-        // const formData = new FormData();
-        // formData.append('title', title);
-        // formData.append('content', body);
-        // formData.append('boardId', board);
-        // if (image) {
-        //     formData.append("image", image);
-        // }
-        // images are just for show
-
         try {
             const response = await fetch(`/api/posts/`, {
                 method: 'POST',
