@@ -4,7 +4,7 @@ import Board from '../views/Board.jsx';
 import Post from '../views/Post.jsx';
 import CreatePost from '../views/CreatePost.jsx';
 import CreateBoard, { createBoardAction } from '../views/CreateBoard.jsx';
-import StartBattle from '../views/StartBattle.jsx';
+import StartBattle, { startBattleAction } from '../views/StartBattle.jsx';
 import Awards from '../views/Awards.jsx';
 
 const BoardRoutes = [
@@ -38,6 +38,7 @@ const BoardRoutes = [
                     {
                         path: 'battle',
                         element: <StartBattle />,
+                        action: startBattleAction,
                     },
                     {
                         path: 'awards',

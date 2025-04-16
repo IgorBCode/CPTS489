@@ -96,7 +96,7 @@ export default function Boards() {
                                             value={searchTerm}
                                             onChange={handleSearchChange}
                                         />
-                                        <button className="btn btn-primary px-4" type="submit">
+                                        <button className="btn btn-primary px-4 board-battles-gradient-text" type="submit">
                                             Search
                                         </button>
                                     </div>
@@ -111,7 +111,7 @@ export default function Boards() {
                                 <div className={`card p-3 h-100`}>
                                     <h5 className="card-title">{board.name}</h5>
                                     <p className={`text-muted clamp-text flex-wrap flex-fill`}>{board.description}</p>
-                                    <NavLink to={`${board._id}`} className="btn btn-primary">
+                                    <NavLink to={`${board._id}`} className="btn btn-primary board-battles-gradient-text ">
                                         Explore
                                     </NavLink>
                                 </div>

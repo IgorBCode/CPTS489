@@ -9,7 +9,7 @@ export default function Profile() {
        <div className={`container d-flex align-items-center justify-items-center`}>
         <div className={styles["profile-container"]}>
             <div className={styles["profile-header"]}>
-                <h>Welcome, {user.username}</h>
+                <h1>Welcome, {user?.username}</h1>
             </div>
             <div className={styles["profile-content"]}>
                 <TrophyCase/>
@@ -182,9 +182,9 @@ function TrophyCase() {
 
     return (
         <div className={styles["trophy-case"]}>
-            <h>Awards</h>
+            <h3>Awards</h3>
             <div className={styles["trophies"]}>
-                {user.awards && user.awards.length > 0 ? (
+                {user?.awards && user?.awards.length > 0 ? (
                     user.awards.map((award, index) => (
                         <img/> // todo: determine which image displays based on user awards
                     ))

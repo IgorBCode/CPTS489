@@ -1,5 +1,5 @@
 import { useState, useContext } from 'react';
-import { NavLink, Outlet } from 'react-router';
+import { NavLink, Outlet, useLocation } from 'react-router';
 import * as Icons from './sidebar-icons';
 import styles from '../styles/Sidebar.module.css';
 import logo from '../assets/logo.png';
@@ -11,7 +11,8 @@ export function Logo() {
 
 export default function Sidebar() {
     const { user } = useContext(UserContext);
-    const [active_index, setActive] = useState(0);
+    const location = useLocation();
+    const path = location.pathname.split('/')[1];
 
     return (
         <>
@@ -25,8 +26,7 @@ export default function Sidebar() {
                             <NavButton
                                 title="Home"
                                 icon={<Icons.HomeIcon fillColor="white" />}
-                                isActive={active_index === 0}
-                                toggleActive={() => setActive(0)}
+                                isActive={location.pathname === '/' || path === ''}
                             />
                         </NavLink>
                     </li>
@@ -35,8 +35,7 @@ export default function Sidebar() {
                             <NavButton
                                 title="Boards"
                                 icon={<Icons.BoardsIcon fillColor="white" />}
-                                isActive={active_index === 1}
-                                toggleActive={() => setActive(1)}
+                                isActive={location.pathname === '/boards' || path === 'boards'}
                             />
                         </NavLink>
                     </li>
@@ -45,8 +44,7 @@ export default function Sidebar() {
                             <NavButton
                                 title="Battles"
                                 icon={<Icons.BattlesIcon fillColor="white" />}
-                                isActive={active_index === 2}
-                                toggleActive={() => setActive(2)}
+                                isActive={location.pathname === '/battles' || path === 'battles'}
                             />
                         </NavLink>
                     </li>
@@ -55,8 +53,7 @@ export default function Sidebar() {
                             <NavButton
                                 title="Awards"
                                 icon={<Icons.AwardsIcon fillColor="white" />}
-                                isActive={active_index === 3}
-                                toggleActive={() => setActive(3)}
+                                isActive={location.pathname === '/awards' || path === 'awards'}
                             />
                         </NavLink>
                     </li>
@@ -68,8 +65,7 @@ export default function Sidebar() {
                             <NavButton
                                 title="Profile"
                                 icon={<Icons.ProfileIcon fillColor="white" />}
-                                isActive={active_index === 4}
-                                toggleActive={() => setActive(4)}
+                                isActive={location.pathname === '/profile' || path === 'profile'}
                             />
                         </NavLink>
                     </li>
