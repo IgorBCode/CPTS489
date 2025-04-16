@@ -1,3 +1,4 @@
+
 import Card from '../components/Card.jsx';
 import { useEffect, useState } from 'react';
 
@@ -31,6 +32,7 @@ export default function Home() {
                     posts.map(post => (
                         <Card
                             key={post._id}
+                            postId = {post._id}
                             postTitle={post.title}
                             postUser={post.author?.username || 'Unknown'}
                             postDate={new Date(post.createdAt)}

@@ -4,15 +4,13 @@ const { createPost,
         getPostsByBoard,
         getPostById, 
         getAllPosts, 
-        upvotePost, 
-        downvotePost
+        votePost 
      } = require('../controllers/postController');
 const verifyToken = require('../middleware/authMiddleware');
 
 router.post('/', verifyToken, createPost);
 router.get('/all', getAllPosts);
-router.post('/:postId/upvote', verifyToken, upvotePost);
-router.post('/:postId/downvote', verifyToken, downvotePost);
+router.post('/:postId/vote', verifyToken, votePost);
 router.get('/:id', verifyToken, getPostById);
 router.get('/board/:boardId', getPostsByBoard);
 

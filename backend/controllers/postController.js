@@ -27,11 +27,26 @@ exports.createPost = async (req, res) => {
 
 exports.getAllPosts = async (req, res) => {
     try {
+        const userId = req.user?.id;
+
         const posts = await Post.find()
         .populate('author', 'username')
         .populate('board', 'name')
-        .sort({ createdAt: -1 }); // sort by newwest fist
+        .sort({ createdAt: -1 }) // sort by newwest fist
+        .lean();
 
+        // this will get information on if the user upvoted the post or not
+        for (const post of posts) {
+            post.userVote = null;
+            if (userId) {
+                if (post.upvotedBy?.some(id => id.toString() === userId)) {
+                    post.userVote = 'up';
+                } else if (post.downvotedBy?.some(id => id.toString() === userId)) {
+                    post.userVote = 'down';
+                }
+            }
+        }
+        
         res.json(posts);
     } catch (err) {
         res.status(500).json({ error: 'Error loading all posts', errorttype: err });
@@ -64,66 +79,46 @@ exports.getPostById = async (req, res) => {
     }
 };
 
-// allows user to upvote a post only once
-exports.upvotePost = async (req, res) => {
+// handle votes
+exports.votePost = async (req, res) => {
     try {
         const { postId } = req.params;
+        const { type } = req.body; // 'up', 'down', or 'none'
         const userId = req.user.id;
-    
-        const post = await Post.findById(postId);
-    
-        if (!post) {
-            return res.status(404).json({ error: 'Post not found' });
-        }
-    
-        if (post.upvotedBy.includes(userId)) {
-            return res.status(400).json({ error: 'Cannot upvote more than once' });
-        }
-    
-        // if down voted then swap from down vote to upvote
-        if (post.downvotedBy.includes(userId)) {
-            post.downvotes--;
-            post.downvotedBy = post.downvotedBy.filter(id => id.toString() !== userId);
-        }
-    
-        post.upvotes++;
-        post.upvotedBy.push(userId);
-    
-        await post.save();
-        res.json(post);
-    } catch (err) {
-        res.status(500).json({ error: 'Upvote failed', errortype: err });
-    };
-};
 
-// same as upvote but with down votes
-exports.downvotePost = async (req, res) => {
-    try {
-        const { postId } = req.params;
-        const userId = req.user.id;
-    
         const post = await Post.findById(postId);
-    
         if (!post) {
             return res.status(404).json({ error: 'Post not found' });
         }
-    
-        if (post.downvotedBy.includes(userId)) {
-            return res.status(400).json({ error: 'Cannot upvote more than once' });
-        }
-    
-        // if down voted then swap from down vote to upvote
-        if (post.upvotedBy.includes(userId)) {
+
+        // Remove previous vote if exists
+        const hadUpvoted = post.upvotedBy.includes(userId);
+        const hadDownvoted = post.downvotedBy.includes(userId);
+
+        if (hadUpvoted) {
             post.upvotes--;
             post.upvotedBy = post.upvotedBy.filter(id => id.toString() !== userId);
         }
-    
-        post.downvotes++;
-        post.downvotedBy.push(userId);
-    
+
+        if (hadDownvoted) {
+            post.downvotes--;
+            post.downvotedBy = post.downvotedBy.filter(id => id.toString() !== userId);
+        }
+
+        // Add new vote
+        if (type === 'up') {
+            post.upvotes++;
+            post.upvotedBy.push(userId);
+        } else if (type === 'down') {
+            post.downvotes++;
+            post.downvotedBy.push(userId);
+        } else if (type !== 'none') {
+            return res.status(400).json({ error: 'Invalid vote type' });
+        }
+
         await post.save();
         res.json(post);
     } catch (err) {
-        res.status(500).json({ error: 'Downvote failed', errortype: err });
+        res.status(500).json({ error: 'Voting failed', errortype: err });
     }
 };

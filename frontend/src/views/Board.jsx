@@ -108,6 +108,7 @@ export default function Board() {
                         posts.map(post => (
                             <Card
                                 key={post._id}
+                                postId = {post._id}
                                 postTitle={post.title}
                                 postUser={post.author.username}
                                 postDate={new Date(post.createdAt)}
