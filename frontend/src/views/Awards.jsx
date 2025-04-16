@@ -1,6 +1,6 @@
 export default function Awards() {
     return (
-        <>
+        <div className="content-container d-flex flex-column flex-fill">
             <h1 className="text-center">Your Trophy Case</h1>
             <div className="content-container">
                 <h3 className="text-center mb-4">Awards</h3>
@@ -59,6 +59,6 @@ export default function Awards() {
                     </div>
                 </div>
             </div>
-        </>
+        </div>
     );
 }

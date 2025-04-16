@@ -1,41 +1,36 @@
 // import { Route } from "react-router";
-import Battles from "../views/Battles.jsx";
-import Battle from "../views/Battle.jsx";
-import StartBattle from "../views/StartBattle.jsx";
-import CreatePost from "../views/CreatePost.jsx";
-import Post from "../views/Post.jsx";
+import Battles from '../views/Battles.jsx';
+import Battle from '../views/Battle.jsx';
+import CreatePost from '../views/CreatePost.jsx';
+import Post from '../views/Post.jsx';
 
 const BattleRoutes = [
-    { 
-        path: "/battles",  
+    {
+        path: '/battles',
         children: [
             {
                 index: true,
-                element: <Battles />, 
+                element: <Battles />,
             },
             {
-                path: "start", 
-                element: <StartBattle />
-            },
-            {
-                path: ":battleId",
+                path: ':battleId',
                 children: [
                     {
                         index: true,
                         element: <Battle />,
                     },
                     {
-                        path: ":postId",
-                        element: <Post />
+                        path: ':postId',
+                        element: <Post />,
                     },
                     {
-                        path: "create",
-                        element: <CreatePost />
-                    }
-                ]
-            }
-        ]
-    }
+                        path: 'create',
+                        element: <CreatePost />,
+                    },
+                ],
+            },
+        ],
+    },
     // <Route path="battles">
     //     <Route index element={<Battles />} />
     //     <Route path="start" element={<StartBattle />} />

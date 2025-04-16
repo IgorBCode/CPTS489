@@ -1,47 +1,38 @@
+import React, { useState } from "react";
+import { Form, NavLink } from "react-router";
+
+export const startBattleAction = async (user, board, boardToBattle) => {
+    const response = await fetch("/api/battles/start", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ user, board, boardToBattle }),
+    });
+    if (!response.ok) {
+        throw new Error("Failed to start battle");
+    }
+    return response.json();
+}
+
 export default function StartBattle() {
+    const [boardToBattle, setBoardToBattle] = useState("");
     return (
-        <>
-            <h1 className="text-center">Board Battle</h1>
-            <div className="content-container">
-                <h3 className="text-center mb-4">Start Battle!</h3>
-                <hr />
-                <div className="container text-center">
-                    <Form>
-                        <div className="row">
-                            <div className="col">
-                                <h3>Board 1</h3>
-                                <select className="form-select" aria-label="Default select example">
-                                    <option selected="">Choose your fighter</option>
-                                    <option value={1}>Cars</option>
-                                    <option value={2}>Food</option>
-                                    <option value={3}>WebDev</option>
-                                    <option value={4}>Pets</option>
-                                    <option value={5}>Gaming</option>
-                                    <option value={6}>Art</option>
-                                    <option value={7}>Movies</option>
-                                </select>
-                            </div>
-                            <div className="col m-4">
-                                <img src="images/vs_img.png" className="vs-img" />
-                            </div>
-                            <div className="col">
-                                <h3>Board 2</h3>
-                                <select className="form-select" aria-label="Default select example">
-                                    <option selected="">Choose your fighter</option>
-                                    <option value={1}>Cars</option>
-                                    <option value={2}>Food</option>
-                                    <option value={3}>WebDev</option>
-                                    <option value={4}>Pets</option>
-                                    <option value={5}>Gaming</option>
-                                    <option value={6}>Art</option>
-                                    <option value={7}>Movies</option>
-                                </select>
-                            </div>
-                        </div>
-                        <button className="btn btn-danger btn-lg mt-2">Fight!</button>
-                    </Form>
-                </div>
+        <div class="content-container d-flex flex-column justify-content-center align-items-center flex-fill">
+            <div className="w-75">
+                <nav>
+                    <NavLink to="/battles">Back</NavLink>
+                </nav>
+                <h1>Start a Battle Between Boards</h1>
+                <Form id="battle-form" className="d-flex flex-column gap-3" method="POST">
+                    <fieldset className="form-group">
+                        <label for="board">
+                        </label>
+                        <input type="text" className={`form-control`} name="board" value={boardToBattle} placeholder="Enter board name" onChange={(e) => setBoardToBattle(e.target.value)} required />
+                    </fieldset>
+                    <button type="submit">Start Battle</button>
+                </Form>
             </div>
-        </>
+        </div>
     );
 }

@@ -1,22 +1,24 @@
-import React, { useState } from "react";
-import { Form, redirect, useNavigate } from "react-router";
-import logo from '../assets/logo.png'
-import styles from '../styles/UserAuthForm.module.css'
+import React, { useContext, useState } from 'react';
+import { Form, redirect, useNavigate } from 'react-router';
+import logo from '../assets/logo.png';
+import styles from '../styles/UserAuthForm.module.css';
+import { getUser, UserContext } from '../context/UserContext';
 
 export default function Register() {
-    const [username, setUsername] = useState("");
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
+    const [username, setUsername] = useState('');
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const { updateUser } = useContext(UserContext);
     const navigate = useNavigate();
 
-    const handleRegister = async (e) => {
+    const handleRegister = async e => {
         e.preventDefault();
 
         try {
-            const response = await fetch("/api/auth/register", {
-                method: "POST",
+            const response = await fetch('/api/auth/register', {
+                method: 'POST',
                 headers: {
-                    "Content-Type": "application/json",
+                    'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({ username, email, password }),
             });
@@ -24,25 +26,33 @@ export default function Register() {
 
             if (response.ok) {
                 console.log(data);
-                navigate("/");
+                updateUser(await getUser());
+                navigate('/');
             } else {
-                alert(data.error || "Login failed");
+                alert(data.error || 'Login failed');
             }
         } catch (error) {
-            console.error("Error registering:", error);
-            alert("An error occurred. Please try again.");
+            console.error('Error registering:', error);
+            alert('An error occurred. Please try again.');
         }
     };
 
     return (
         <div className="container d-flex align-items-center justify-content-center vh-100">
             <div className="col-md-6">
-                <div className={`card p-4 ${styles["login-style"]}`}>
+                <div className={`card p-4 ${styles['login-style']}`}>
                     <div className="d-flex flex-column align-items-center">
-                        <img className={styles["login-logo"]} src={logo}></img>
+                        <img className={styles['login-logo']} src={logo}></img>
                         <h3 className="mb-3">Register</h3>
                     </div>
-                    <Form action="/" method="POST" onSubmit={(e) => { handleRegister(e); navigate("/") }}>
+                    <Form
+                        action="/"
+                        method="POST"
+                        onSubmit={e => {
+                            handleRegister(e);
+                            navigate('/');
+                        }}
+                    >
                         <div className="mb-3">
                             <label htmlFor="username" className="form-label">
                                 Username
@@ -54,7 +64,7 @@ export default function Register() {
                                 name="username"
                                 placeholder="Enter your username"
                                 value={username}
-                                onChange={(e) => setUsername(e.target.value)}
+                                onChange={e => setUsername(e.target.value)}
                                 required
                             />
                         </div>
@@ -69,7 +79,7 @@ export default function Register() {
                                 name="email"
                                 value={email}
                                 placeholder="Enter your email"
-                                onChange={(e) => setEmail(e.target.value)}
+                                onChange={e => setEmail(e.target.value)}
                                 required
                             />
                         </div>
@@ -84,19 +94,16 @@ export default function Register() {
                                 name="password"
                                 placeholder="Enter your password"
                                 value={password}
-                                onChange={(e) => setPassword(e.target.value)}
+                                onChange={e => setPassword(e.target.value)}
                                 required
                             />
                         </div>
-                        <button
-                            type="submit"
-                            className={`btn w-100 ${styles["login-button"]}`}
-                        >
+                        <button type="submit" className={`btn w-100 ${styles['login-button']}`}>
                             <strong>Register</strong>
                         </button>
                     </Form>
                 </div>
             </div>
         </div>
-    )
+    );
 }

@@ -1,37 +1,13 @@
+import styles from '../styles/CreatePost.module.css';
+
 export default function CreatePost() {
     return (
         <>
-            <style>
-                {`
-                    .board-dropdown {
-                        width: 10rem;
-                        height: 2.5rem;
-                        background-color: #48545b;
-                    }
-                    .board-dropdown::after {
-                        vertical-align: 0.125rem;
-                    }
-
-                    .upload-image {
-                        position: relative;
-                        width: 2.5rem;
-                        height: 2.5rem;
-                    }
-
-                    .upload-image input {
-                        width: 100%;
-                        height: 100%;
-                        position: absolute;
-                        top: 0;
-                        left: 0;
-                    }
-                `}
-            </style>
             <h3>Create Post</h3>
             <div className="button-row d-flex justify-content-between align-items-end">
                 <div className="dropdown mt-2">
                     <button
-                        className="board-dropdown btn btn-secondary dropdown-toggle"
+                        className={`${styles['board-dropdown']} btn btn-secondary dropdown-toggle`}
                         type="button"
                         data-bs-toggle="dropdown"
                         aria-expanded="false"
@@ -58,7 +34,7 @@ export default function CreatePost() {
                 </div>
                 <button
                     type="button"
-                    className="upload-image btn btn-secondary d-flex align-items-center"
+                    className={`${styles['upload-image']} btn btn-secondary d-flex align-items-center`}
                 >
                     <input type="file" className="opacity-0" />
                     <svg
@@ -87,7 +63,7 @@ export default function CreatePost() {
                     className="form-control"
                     placeholder="Body"
                     aria-label="With textarea"
-                    defaultValue={""}
+                    defaultValue={''}
                 />
             </div>
             <button

@@ -1,46 +1,51 @@
 // import { Route } from "react-router";
-import Boards from "../views/Boards.jsx";
-import Board from "../views/Board.jsx";
-import Post from "../views/Post.jsx";
-import CreatePost from "../views/CreatePost.jsx";
-import CreateBoard, { createBoardAction } from "../views/CreateBoard.jsx";
-import Awards from "../views/Awards.jsx";
+import Boards from '../views/Boards.jsx';
+import Board from '../views/Board.jsx';
+import Post from '../views/Post.jsx';
+import CreatePost from '../views/CreatePost.jsx';
+import CreateBoard, { createBoardAction } from '../views/CreateBoard.jsx';
+import StartBattle from '../views/StartBattle.jsx';
+import Awards from '../views/Awards.jsx';
 
 const BoardRoutes = [
     {
-        path: "boards",
+        path: 'boards',
         children: [
             {
                 index: true,
                 element: <Boards />,
             },
             {
-                path: "create",
+                path: 'create',
                 element: <CreateBoard />,
                 action: createBoardAction,
             },
             {
-                path: ":boardId",
+                path: ':boardId',
                 children: [
                     {
                         index: true,
                         element: <Board />,
                     },
                     {
-                        path: ":postId",
+                        path: ':postId',
                         element: <Post />,
                     },
                     {
-                        path: "create",
+                        path: 'create',
                         element: <CreatePost />,
                     },
                     {
-                        path: "awards",
+                        path: 'battle',
+                        element: <StartBattle />,
+                    },
+                    {
+                        path: 'awards',
                         element: <Awards />,
-                    }
-                ]
-            }
-        ]
+                    },
+                ],
+            },
+        ],
     },
     // <Route path="boards">
     //     <Route index element={<Boards />} />
@@ -51,6 +56,6 @@ const BoardRoutes = [
     //         <Route path="awards" element={<Awards />} />
     //     </Route>
     // </Route>
-]
+];
 
 export default BoardRoutes;

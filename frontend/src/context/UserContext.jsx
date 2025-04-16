@@ -1,50 +1,50 @@
-import { createContext, useState, useEffect, useRef } from 'react'
+import { createContext, useState, useEffect, useRef } from 'react';
 
-export const UserContext = createContext()
+export const UserContext = createContext();
 
 export const getUser = async () => {
     try {
         const tokenData = await fetch('/api/auth/me', {
             method: 'GET',
-            credentials: 'include'
-        })
-        const token = await tokenData.json()
+            credentials: 'include',
+        });
+        const token = await tokenData.json();
 
         const userData = await fetch(`/api/users/${token.user.id}`, {
             method: 'GET',
-            credentials: 'include'
+            credentials: 'include',
         });
-        const user = await userData.json()
+        const user = await userData.json();
 
-        console.log(token.message)
+        console.log(token.message);
 
-        return user
+        return user;
     } catch (err) {
-        console.log("Couldn't get user")
-        return null
+        console.log("Couldn't get user");
+        return null;
     }
-}
+};
 
 export const getBoards = async () => {
     try {
         const boardsData = await fetch('/api/boards/', {
-            method: 'GET'
+            method: 'GET',
         });
-        const boards = await boardsData.json()
+        const boards = await boardsData.json();
 
-        console.log("Fetched boards successfully")
+        console.log('Fetched boards successfully');
 
-        return boards
+        return boards;
     } catch (err) {
-        console.log("Couldn't fetch boards")
-        return []
+        console.log("Couldn't fetch boards");
+        return [];
     }
-}
+};
 
 export const UserProvider = ({ children }) => {
-    const isLoading = useRef(true)
-    const [user, setUser] = useState(null)
-    const [boards, setBoards] = useState([])
+    const [isLoading, setIsLoading] = useState(true);
+    const [user, setUser] = useState(null);
+    const [boards, setBoards] = useState([]);
 
     useEffect(() => {
         if (!isLoading.current) return;
@@ -55,15 +55,30 @@ export const UserProvider = ({ children }) => {
 
             setUser(userData);
             setBoards(boardsData);
-        }
+        };
 
         fetchData();
         isLoading.current = false;
-    }, [])
+    }, []);
+
+    const updateUser = async () => {
+        setUser(await getUser());
+    };
+
+    const updateBoards = async () => {
+        setBoards(await getBoards());
+    };
+
+    const refreshData = async () => {
+        const userData = await getUser();
+        const boardsData = await getBoards();
+        setUser(userData);
+        setBoards(boardsData);
+    };
 
     return (
-        <UserContext.Provider value={{ user, boards }}>
+        <UserContext.Provider value={{ user, boards, updateUser, updateBoards, refreshData }}>
             {children}
         </UserContext.Provider>
-    )
-}
+    );
+};

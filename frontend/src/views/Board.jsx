@@ -1,7 +1,7 @@
-import React, { useContext } from "react";
-import { useNavigate, useParams } from "react-router";
-import { UserContext } from "../context/UserContext";
-import { useState, useEffect } from "react";
+import React, { useContext } from 'react';
+import { NavLink, useParams } from 'react-router';
+import { UserContext } from '../context/UserContext';
+import { useState, useEffect } from 'react';
 import Card from '../components/Card.jsx';
 
 export default function Board() {
@@ -9,7 +9,6 @@ export default function Board() {
     const { boardId } = useParams();
     const [board, setBoard] = useState(null);
     const [posts, setPosts] = useState([]);
-    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchBoardInfo = async () => {
@@ -29,55 +28,67 @@ export default function Board() {
     }, [boardId]);
 
     const handleJoinBoard = async () => {
-        const response = await fetch("/api/subscriptions/subscribe", {
-            method: "POST",
+        const response = await fetch('/api/subscriptions/subscribe', {
+            method: 'POST',
             headers: {
-                "Content-Type": "application/json"
+                'Content-Type': 'application/json',
             },
-            credentials: "include",
+            credentials: 'include',
             body: JSON.stringify({
                 boardId: boardId,
-            })
-        })
+            }),
+        });
         const data = await response.json();
 
         if (response.ok) {
-            console.log("Subscribed to board.", data);
+            console.log('Subscribed to board.', data);
             await fetchBoardInfo();
         } else {
-            console.error("Failed to subscribe to board.", data.error);
+            console.error('Failed to subscribe to board.', data.error);
         }
-    }
+    };
 
     return (
         <div className="content-container flex-fill">
             <h1 className="text-center">Welcome to BoardName!</h1>
+            <NavLink
+                className="btn btn-primary position-absolute top-0 end-0 m-3 board-battles-gradient-text"
+                to="battle"
+            >
+                Start Board Battle
+            </NavLink>
             {/* Trophy case */}
             <div className="p-3 rounded mini-trophy-case">
                 <h5 className="text-center">🏆 Trophy Case</h5>
                 <hr />
                 <div className="text-center">
-                {board?.awards?.length > 0 ? (
-                    board.awards.map((gif, index) => (
-                        <img
-                            key={index}
-                            src={gif}
-                            alt={`Trophy ${index}`}
-                            className="mb-2 mx-1"
-                            width={50}
-                        />
-                    ))
-                ) : (
-                    <p>No awards yet.</p>
-                )}
+                    {board?.awards?.length > 0 ? (
+                        board.awards.map((gif, index) => (
+                            <img
+                                key={index}
+                                src={gif}
+                                alt={`Trophy ${index}`}
+                                className="mb-2 mx-1"
+                                width={50}
+                            />
+                        ))
+                    ) : (
+                        <p>No awards yet.</p>
+                    )}
                 </div>
             </div>
             <div className="container mt-4">
                 <div className="d-flex justify-content-between align-items-center mt-3">
                     <h3 className="mb-0">Posts</h3>
-                    {!user.subscriptions.includes(boardId) && <button type="button" className="btn btn-success btn-md px-4" onClick={handleJoinBoard}>
-                        Join Board!
-                    </button>}
+                    {!user.subscriptions.includes(boardId) && (
+                        <button
+                            type="button"
+                            className="btn btn-success btn-md px-4"
+                            onClick={handleJoinBoard}
+                        >
+                            Join Board!
+                        </button>
+                    )}
                     <div>
                         <label className="me-2">Sort by:</label>
                         <select className="form-select d-inline-block w-auto">
@@ -92,7 +103,7 @@ export default function Board() {
                         <p>No posts. Be the first to post here!</p>
                     ) : (
                         posts.map(post => (
-                            <Card 
+                            <Card
                                 key={post._id}
                                 postTitle={post.title}
                                 postUser={post.author.username}

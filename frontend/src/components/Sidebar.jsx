@@ -1,82 +1,112 @@
 import { useState, useContext } from 'react';
-import { Navigate, NavLink, Outlet} from 'react-router';
+import { NavLink, Outlet } from 'react-router';
 import * as Icons from './sidebar-icons';
-import styles from '../styles/Sidebar.module.css'
-import logo from '../assets/logo.png'
-import { UserContext } from '../context/UserContext'
+import styles from '../styles/Sidebar.module.css';
+import logo from '../assets/logo.png';
+import { UserContext } from '../context/UserContext';
 
 export function Logo() {
-    return (
-        <img className={styles["logo"]} src={logo}></img>
-    )
+    return <img className={styles['logo']} src={logo}></img>;
 }
 
 export default function Sidebar() {
+    const { user } = useContext(UserContext);
     const [active_index, setActive] = useState(0);
 
     return (
         <>
-            <div className={styles["sidebar"]}>
-                <div><Logo /></div>
-                <ul className={styles["nav-menu"]}>
-                    <li><NavLink className={styles["nav-link"]} to=""><NavButton
-                        title="Home"
-                        icon={<Icons.HomeIcon fillColor="white" />}
-                        isActive={active_index === 0}
-                        toggleActive={() => setActive(0)}
-                    /></NavLink></li>
-                    <li><NavLink className={styles["nav-link"]} to="boards"><NavButton
-                        title="Boards"
-                        icon={<Icons.BoardsIcon fillColor="white" />}
-                        isActive={active_index === 1}
-                        toggleActive={() => setActive(1)}
-                    /></NavLink></li>
-                    <li><NavLink className={styles["nav-link"]} to="battles"><NavButton
-                        title="Battles"
-                        icon={<Icons.BattlesIcon fillColor="white" />}
-                        isActive={active_index === 2}
-                        toggleActive={() => setActive(2)}
-                    /></NavLink></li>
-                    <li><NavLink className={styles["nav-link"]} to=""><NavButton
-                        title="Awards"
-                        icon={<Icons.AwardsIcon fillColor="white" />}
-                        isActive={active_index === 3}
-                        toggleActive={() => setActive(3)}
-                    /></NavLink></li>
-                    <li><NavLink className={styles["nav-link"]} to=""><NavButton
-                        title="Profile"
-                        icon={<Icons.ProfileIcon fillColor="white" />}
-                        isActive={active_index === 4}
-                        toggleActive={() => setActive(4)}
-                    /></NavLink></li>
+            <div className={styles['sidebar']}>
+                <div>
+                    <Logo />
+                </div>
+                <ul className={styles['nav-menu']}>
+                    <li>
+                        <NavLink className={styles['nav-link']} to="">
+                            <NavButton
+                                title="Home"
+                                icon={<Icons.HomeIcon fillColor="white" />}
+                                isActive={active_index === 0}
+                                toggleActive={() => setActive(0)}
+                            />
+                        </NavLink>
+                    </li>
+                    <li>
+                        <NavLink className={styles['nav-link']} to="boards">
+                            <NavButton
+                                title="Boards"
+                                icon={<Icons.BoardsIcon fillColor="white" />}
+                                isActive={active_index === 1}
+                                toggleActive={() => setActive(1)}
+                            />
+                        </NavLink>
+                    </li>
+                    <li>
+                        <NavLink className={styles['nav-link']} to="battles">
+                            <NavButton
+                                title="Battles"
+                                icon={<Icons.BattlesIcon fillColor="white" />}
+                                isActive={active_index === 2}
+                                toggleActive={() => setActive(2)}
+                            />
+                        </NavLink>
+                    </li>
+                    <li>
+                        <NavLink className={styles['nav-link']} to="awards">
+                            <NavButton
+                                title="Awards"
+                                icon={<Icons.AwardsIcon fillColor="white" />}
+                                isActive={active_index === 3}
+                                toggleActive={() => setActive(3)}
+                            />
+                        </NavLink>
+                    </li>
+                    <li>
+                        <NavLink className={styles['nav-link']} to={user ? `profile/${user._id}` : "login"}>
+                            <NavButton
+                                title="Profile"
+                                icon={<Icons.ProfileIcon fillColor="white" />}
+                                isActive={active_index === 4}
+                                toggleActive={() => setActive(4)}
+                            />
+                        </NavLink>
+                    </li>
                 </ul>
-                <div><JoinedBoards /></div>
-                <div><Login icon={<Icons.LoginIcon fillColor="white" />} /></div>
+                <div>
+                    <JoinedBoards />
+                </div>
+                <div>
+                    <Login icon={<Icons.LoginIcon fillColor="white" />} />
+                </div>
             </div>
 
             <Outlet />
         </>
-    )
+    );
 }
 
 function JoinedBoards() {
-    
-    const { user, boards } = useContext(UserContext)
-    
+    const { user, boards } = useContext(UserContext);
+
     return (
-        <div className={styles["my-boards"]}>
+        <div className={styles['my-boards']}>
             <h1>Your Boards</h1>
             {!user ? (
                 <p>Sign in to see your Boards</p>
             ) : (
                 <ul>
-                    <NavLink to="/boards/"><li>Board 1</li></NavLink>
-                    <NavLink to="/boards/"><li>Board 2</li></NavLink>
-                    <NavLink to="/boards/"><li>Board 3</li></NavLink>
+                    <NavLink to="/boards/">
+                        <li>Board 1</li>
+                    </NavLink>
+                    <NavLink to="/boards/">
+                        <li>Board 2</li>
+                    </NavLink>
+                    <NavLink to="/boards/">
+                        <li>Board 3</li>
+                    </NavLink>
                 </ul>
             )}
         </div>
-    )
+    );
 }
 
 function Login({ icon }) {
@@ -84,52 +114,72 @@ function Login({ icon }) {
 
     const handleLogout = async () => {
         try {
-            const response = await fetch("/api/auth/logout", {
-                method: "POST",
-                credentials: "include",
+            const response = await fetch('/api/auth/logout', {
+                method: 'POST',
+                credentials: 'include',
             });
 
             if (response.ok) {
-                alert("You have been logged out successfully!");
-                window.location.reload()
+                alert('You have been logged out successfully!');
+                window.location.reload();
             } else {
-                alert("Failed to log out. Please try again.");
+                alert('Failed to log out. Please try again.');
             }
         } catch (err) {
-            console.error("Error during logout:", err);
-            alert("An error occurred while logging out.");
+            console.error('Error during logout:', err);
+            alert('An error occurred while logging out.');
         }
     };
 
     return (
-        <div className={`dropup ${styles["login"]}`}>
-            <div className={styles["login-icon"]}>{icon}</div>
-            <div className={styles["dropdown-toggle"]} data-bs-toggle="dropdown">{!user ? (<>Sign In/Sign Up</>) : (<>{user.username}</>)}</div>
-            <ul className={`dropdown-menu ${styles["login-menu"]}`}>
+        <div className={`dropup ${styles['login']}`}>
+            <div className={styles['login-icon']}>{icon}</div>
+            <div className={styles['dropdown-toggle']} data-bs-toggle="dropdown">
+                {!user ? <>Sign In/Sign Up</> : <>{user.username}</>}
+            </div>
+            <ul className={`dropdown-menu ${styles['login-menu']}`}>
                 {!user ? (
-                    <>    
-                        <li><NavLink to="login" className={styles["dropdown-item"]}>Sign In</NavLink></li>
-                        <li><NavLink to="register" className={styles["dropdown-item"]}>Sign Up</NavLink></li>
+                    <>
+                        <li>
+                            <NavLink to="login" className={styles['dropdown-item']}>
+                                Sign In
+                            </NavLink>
+                        </li>
+                        <li>
+                            <NavLink to="register" className={styles['dropdown-item']}>
+                                Sign Up
+                            </NavLink>
+                        </li>
                     </>
                 ) : (
                     <>
-                        <li><NavLink to="/" onClick={handleLogout} className={styles["dropdown-item"]}>Sign Out</NavLink></li>
+                        <li>
+                            <NavLink
+                                to="/"
+                                onClick={handleLogout}
+                                className={styles['dropdown-item']}
+                            >
+                                Sign Out
+                            </NavLink>
+                        </li>
                     </>
                 )}
             </ul>
         </div>
-    )
+    );
 }
 
 function NavButton({ title, isActive, toggleActive, icon }) {
     return (
-        <button className={`${styles["nav-button"]} ${isActive ? styles["nav-button-active"] : ""}`} onClick={toggleActive}>
-            <div className={styles["nav-icon"]}>{icon}</div>
-            <p className={styles["nav-title"]}>{title}</p>
+        <button
+            className={`${styles['nav-button']} ${isActive ? styles['nav-button-active'] : ''}`}
+            onClick={toggleActive}
+        >
+            <div className={styles['nav-icon']}>{icon}</div>
+            <p className={styles['nav-title']}>{title}</p>
         </button>
-    )
+    );
 }
-
 
 // keeping old code just in case
 
