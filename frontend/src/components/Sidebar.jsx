@@ -61,7 +61,10 @@ export default function Sidebar() {
                         </NavLink>
                     </li>
                     <li>
-                        <NavLink className={styles['nav-link']} to={user ? `profile/${user._id}` : "login"}>
+                        <NavLink
+                            className={styles['nav-link']}
+                            to={user ? `profile/${user._id}` : 'login'}
+                        >
                             <NavButton
                                 title="Profile"
                                 icon={<Icons.ProfileIcon fillColor="white" />}
@@ -87,22 +90,25 @@ export default function Sidebar() {
 function JoinedBoards() {
     const { user, boards } = useContext(UserContext);
 
+    const subscribedBoards =
+        user && boards
+            ? boards.filter(board => user.subscriptions && user.subscriptions.includes(board._id))
+            : [];
+
     return (
         <div className={styles['my-boards']}>
             <h1>Your Boards</h1>
             {!user ? (
                 <p>Sign in to see your Boards</p>
+            ) : subscribedBoards.length === 0 ? (
+                <p>You haven't subscribed to any boards yet</p>
             ) : (
                 <ul>
-                    <NavLink to="/boards/">
-                        <li>Board 1</li>
-                    </NavLink>
-                    <NavLink to="/boards/">
-                        <li>Board 2</li>
-                    </NavLink>
-                    <NavLink to="/boards/">
-                        <li>Board 3</li>
-                    </NavLink>
+                    {subscribedBoards.map(board => (
+                        <NavLink key={board._id} to={`/boards/${board._id}`}>
+                            <li>{board.name}</li>
+                        </NavLink>
+                    ))}
                 </ul>
             )}
         </div>
