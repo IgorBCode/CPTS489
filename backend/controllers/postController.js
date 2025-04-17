@@ -93,10 +93,15 @@ exports.getPostsByBoard = async (req, res) => {
 
 exports.getPostById = async (req, res) => {
     try {
-        const post = await Post.findById(req.params.id);
+        const post = await Post.findById(req.params.id)
+            .populate('author', 'username')
+            .populate('board', 'name')
+            .lean();
+
         if (!post) {
             return res.status(404).json({ error: 'Post not found' });
         }
+
         res.json(post);
     } catch (err) {
         res.status(500).json({ error: 'Error loading post info', errortype: err });
