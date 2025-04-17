@@ -101,8 +101,8 @@ export default function Battles() {
 
     const renderFilteredBattles = () => {
         return filteredBattles.map(battle => {
-            const boardA = battle.boardA.name;
-            const boardB = battle.boardB.name;
+            const boardA = battle.boardA?.name || "Unknown";
+            const boardB = battle.boardB?.name || "Unknown";
             const upvotes = upvoteMap[battle._id] || { boardA: 0, boardB: 0 };
 
             const now = new Date();
