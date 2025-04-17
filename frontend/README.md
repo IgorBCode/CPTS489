@@ -1,2 +1,1 @@
-public/ is for any assets not used by the app when it compiles
-src/assets/ is for any assets that are used by the app when it compiles
+The files in the public/ folder are not part of the application but were still useful for us at some point in making the application
