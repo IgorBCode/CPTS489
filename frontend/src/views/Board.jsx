@@ -49,23 +49,17 @@ export default function Board() {
     };
 
     return (
-        <div className="content-container flex-fill">
-            <h1 className="text-center">
-                Welcome to {board?.name ?? 'the board'}!
-            </h1>
+        <div className="content-container flex-fill mt-4">
+            <h1 className="text-center">Welcome to {board?.name}!</h1>
             <NavLink
-                className="btn btn-primary position-absolute top-0 start-2 m-3 board-battles-gradient-text"
+                className="btn btn-primary position-absolute top-0 end-0 m-3 board-battles-gradient-text"
                 to="battle"
             >
                 Start Board Battle
             </NavLink>
-            <NavLink to="create" className="btn  btn-primary position-absolute top-0.75 start-2 m-3 board-battles-gradient-text">
-                Create Post
-            </NavLink>
             {/* Trophy case */}
             <div className="p-3 rounded mini-trophy-case">
                 <h5 className="text-center">🏆 Trophy Case</h5>
-                <hr />
                 <div className="text-center">
                     {board?.awards?.length > 0 ? (
                         board.awards.map((gif, index) => (
@@ -81,6 +75,7 @@ export default function Board() {
                         <p>No awards yet.</p>
                     )}
                 </div>
+                <hr />
             </div>
             <div className="container mt-4">
                 <div className="d-flex justify-content-between align-items-center mt-3">
@@ -94,13 +89,12 @@ export default function Board() {
                             Join Board!
                         </button>
                     )}
-                    <div>
-                        <label className="me-2">Sort by:</label>
-                        <select className="form-select d-inline-block w-auto">
-                            <option value="date">Date</option>
-                            <option value="score">Score</option>
-                        </select>
-                    </div>
+                    <NavLink
+                        to="create"
+                        className="btn  btn-primary board-battles-gradient-text"
+                    >
+                        Create Post
+                    </NavLink>
                 </div>
                 {/* Posts */}
                 <div className="row flex-column gap-4 mt-3">
@@ -110,13 +104,14 @@ export default function Board() {
                         posts.map(post => (
                             <Card
                                 key={post._id}
-                                postId = {post._id}
+                                postId={post._id}
                                 postTitle={post.title}
                                 postUser={post.author.username}
                                 postDate={new Date(post.createdAt)}
                                 upvotes={post.upvotes}
                                 downvotes={post.downvotes}
                                 boardName={board.name}
+                                boardId={boardId}
                                 commentCount={post.commentCount}
                             />
                         ))

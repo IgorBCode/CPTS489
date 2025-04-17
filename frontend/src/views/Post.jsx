@@ -74,7 +74,7 @@ export default function Post() {
         <div className={`container d-flex align-items-center justify-items-center`}>
             <div className={styles['post-container']}>
                 <div className={styles['post-header']}>
-                    <VoteButtons postId={postId} upvotes={post.upvotes} downvotes={post.downvotes}/>
+                    <VoteButtons postId={postId} upvotes={post.upvotes} downvotes={post.downvotes} initialVote={post.userVote}/>
                     <div className={styles["post-info"]}>
                         <h>{post.title}</h>
                         <p>{post.author?.username || 'Unknown'}</p>

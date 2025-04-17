@@ -90,9 +90,8 @@ export default function Boards() {
     };
 
     return (
-        <>
             <div className={styles['content-container']}>
-                <h1 className="text-center">Explore Communities</h1>
+                <h1 className="text-center mt-4">Explore Communities</h1>
                 {/* list of boards */}
                 <div className={`row ${styles['row']}`}>
                     <div className="row align-items-start">
@@ -136,6 +135,5 @@ export default function Boards() {
                     )}
                 </div>
             </div>
-        </>
     );
 }

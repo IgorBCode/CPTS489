@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { useLoaderData } from 'react-router';
+import { NavLink, useLoaderData } from 'react-router';
 import { UserContext } from '../context/UserContext.jsx';
 import SearchBar from '../components/SearchBar.jsx';
 
@@ -99,6 +99,55 @@ export default function Battles() {
         }
     };
 
+    const renderFilteredBattles = () => {
+        return filteredBattles.map(battle => {
+            const boardA = battle.boardA.name;
+            const boardB = battle.boardB.name;
+            const upvotes = upvoteMap[battle._id] || { boardA: 0, boardB: 0 };
+
+            const now = new Date();
+            const end = new Date(battle.endTime);
+            const timeLeft = end - now;
+            const isOver = timeLeft <= 0;
+
+            return (
+                <NavLink className="col-12 mb-4 text-decoration-none" key={battle._id} to={battle._id}>
+                    <div className="d-flex justify-content-center">
+                        <div className="col-md-6">
+                            <div className="card text-center">
+                                <div className="card-header text-white board-battles-gradient-text">
+                                    <h2>
+                                        {boardA} VS {boardB}
+                                    </h2>
+                                </div>
+                                <div className="card-body">
+                                    <p>
+                                        <strong>{boardA} Upvotes:</strong> {upvotes.boardA}
+                                    </p>
+                                    <p>
+                                        <strong>{boardB} Upvotes:</strong> {upvotes.boardB}
+                                    </p>
+                                </div>
+                                <div className="card-footer">
+                                    {isOver ? (
+                                        <p className="text-success">
+                                            <strong>Winner:</strong>{' '}
+                                            {battle.winner?.name || 'Tie / Undecided'}
+                                        </p>
+                                    ) : (
+                                        <p className="text-danger">
+                                            {formatTimeRemaining(timeLeft)}
+                                        </p>
+                                    )}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </NavLink>
+            );
+        });
+    };
+
     return (
         <div className="content-container flex-fill">
             <section className="my-3 text-center">
@@ -134,54 +183,7 @@ export default function Battles() {
                 {filteredBattles.length === 0 ? (
                     <p className="text-center">No battles to show.</p>
                 ) : (
-                    filteredBattles.map(battle => {
-                        const boardA = battle.boardA.name;
-                        const boardB = battle.boardB.name;
-                        const upvotes = upvoteMap[battle._id] || { boardA: 0, boardB: 0 };
-
-                        const now = new Date();
-                        const end = new Date(battle.endTime);
-                        const timeLeft = end - now;
-                        const isOver = timeLeft <= 0;
-
-                        return (
-                            <div className="col-12 mb-4" key={battle._id}>
-                                <div className="d-flex justify-content-center">
-                                    <div className="col-md-6">
-                                        <div className="card text-center">
-                                            <div className="card-header text-white board-battles-gradient-text">
-                                                <h2>
-                                                    {boardA} VS {boardB}
-                                                </h2>
-                                            </div>
-                                            <div className="card-body">
-                                                <p>
-                                                    <strong>{boardA} Upvotes:</strong>{' '}
-                                                    {upvotes.boardA}
-                                                </p>
-                                                <p>
-                                                    <strong>{boardB} Upvotes:</strong>{' '}
-                                                    {upvotes.boardB}
-                                                </p>
-                                            </div>
-                                            <div className="card-footer">
-                                                {isOver ? (
-                                                    <p className="text-success">
-                                                        <strong>Winner:</strong>{' '}
-                                                        {battle.winner?.name || 'Tie / Undecided'}
-                                                    </p>
-                                                ) : (
-                                                    <p className="text-danger">
-                                                        {formatTimeRemaining(timeLeft)}
-                                                    </p>
-                                                )}
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        );
-                    })
+                    renderFilteredBattles()
                 )}
             </div>
         </div>

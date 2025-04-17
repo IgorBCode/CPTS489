@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import styles from '../styles/Card.module.css';
 import * as Icons from './post-icons';
 
@@ -27,15 +27,26 @@ export function DislikeButton({ isClicked, toggleClicked }) {
 }
 
 export default function VoteButtons({ postId, upvotes, downvotes }) {
-    const [index, setClicked] = useState(2); // 0 = liked, 1 = disliked, 2 = none
+    const [index, setClicked] = useState(2);
     const [curUpvotes, setUpvotes] = useState(upvotes);
     const [curDownvotes, setDownvotes] = useState(downvotes);
 
     const handleClick = async (voteType) => {
         try {
             let type = 'none';
-            if (voteType === 0 && index !== 0) type = 'up';
-            if (voteType === 1 && index !== 1) type = 'down';
+            if (voteType === 0 && index === 0) {
+                type = 'none';
+                setClicked(2);
+            } 
+            else if (voteType === 1 && index === 1) {
+                type = 'none';
+                setClicked(2);
+            }
+            else {
+                if (voteType === 0) type = 'up';
+                if (voteType === 1) type = 'down';
+                setClicked(voteType);
+            }
 
             const res = await fetch(`/api/posts/${postId}/vote`, {
                 method: 'POST',
@@ -48,7 +59,6 @@ export default function VoteButtons({ postId, upvotes, downvotes }) {
             if (res.ok) {
                 setUpvotes(updated.upvotes);
                 setDownvotes(updated.downvotes);
-                setClicked(voteType === 0 ? 0 : 1);
             } else {
                 console.error('Vote error:', updated.error);
             }
