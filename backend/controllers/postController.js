@@ -1,5 +1,6 @@
 const Post = require('../models/Post');
 const Board = require('../models/Board');
+const Comment = require('../models/Comment');
 
 exports.createPost = async (req, res) => {
     try {
@@ -45,6 +46,8 @@ exports.getAllPosts = async (req, res) => {
                     post.userVote = 'down';
                 }
             }
+
+            post.commentCount = await Comment.countDocuments({ post: post._id });
         }
         
         res.json(posts);
@@ -53,13 +56,34 @@ exports.getAllPosts = async (req, res) => {
     }
 };
 
+
 exports.getPostsByBoard = async (req, res) => {
     try {
         const { boardId } = req.params;
+        const userId = req.user?.id;
 
         const posts = await Post.find({ board: boardId })
             .populate('author', 'username')
-            .sort({ createdAt: -1 }); // newwest posts first
+            .populate('board', 'name')
+            .sort({ createdAt: -1 })
+            .lean(); // allows us to modify post objects
+
+        const postIds = posts.map(post => post._id);
+
+        // Get comment counts per post
+        const commentCounts = await Comment.aggregate([
+            { $match: { post: { $in: postIds } } },
+            { $group: { _id: '$post', count: { $sum: 1 } } }
+        ]);
+
+        const countMap = {};
+        commentCounts.forEach(c => {
+            countMap[c._id.toString()] = c.count;
+        });
+
+        for (const post of posts) {
+            post.commentCount = countMap[post._id.toString()] || 0;
+        }
 
         res.json(posts);
     } catch (err) {
